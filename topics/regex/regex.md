@@ -29,6 +29,6 @@ para criarmos os padroes que precisamos, precisamos usar a sintaxe do RegEx. alg
 
 ## tarefas 
 
-- [regex para email]()
-- [regex para cpf]()
-- [regex para senhas]()
+- [regex para email](https://github.com/CarlosG18/advanced_topics_py/blob/main/topics/regex/email.md)
+- [regex para cpf](https://github.com/CarlosG18/advanced_topics_py/blob/main/topics/regex/cpf.md)
+- [regex para senhas](https://github.com/CarlosG18/advanced_topics_py/blob/main/topics/regex/senha.md)

@@ -9,7 +9,7 @@ import re
 
 para criarmos um padrao podemos ultilizar o metodo **compile()**.
 
-# sintaxe do RegEx
+## sintaxe do RegEx
 
 para criarmos os padroes que precisamos, precisamos usar a sintaxe do RegEx. alguns elementos básicos são:
 
@@ -22,6 +22,10 @@ para criarmos os padroes que precisamos, precisamos usar a sintaxe do RegEx. alg
 -   []  : indica um conjunto de caracteres;
 -   {3} : informar a quantidade de vezes que um determinado padrão deve ocorrer;
 -   {x,y} : informar o minimo x e o maximo y em que o padrão ocorre.
+
+## algumas funções da lib re
+
+
 
 ## tarefas 
 

@@ -8,8 +8,7 @@ class Tabuleiro:
         self.cor1 = cor1
         self.cor2  = cor2
         self.casas_matriz = []
-        self.pecas_player1 = []
-        self.pecas_player2 = []
+        self.casas_dispo = []
         self.matriz_pos = []
         self.tam_casa = None
         self.prox_jogada = 1
@@ -18,6 +17,7 @@ class Tabuleiro:
         self.ajust_tam()
         self.create_casas()
         self.click = False
+
 
     def set_prox_jogada(self):
         if self.prox_jogada == 1:
@@ -110,11 +110,14 @@ class Tabuleiro:
     def atualizar_matriz_casas(self, i, j):
         self.casas_matriz[i][j] = self.casa_atual
 
+    def atualizar_matriz_casas_reset(self, i, j, casa):
+        self.casas_matriz[i][j] = casa
+
     def check_click(self, pos, screen):
         i, j = self.get_casa_click(pos)
         casa = self.casas_matriz[i][j]
         print(self.modo)
-        print(f'casa selecionada {casa} - casa atual {self.casa_atual}')
+        #print(f'casa selecionada {casa} - casa atual {self.casa_atual}')
 
         if self.modo == "select":
             if casa.ocupado:
@@ -136,16 +139,19 @@ class Tabuleiro:
             
     
     def show_jogadas(self, casa):
-        i_prox = [casa.i-1,casa.i-1,casa.i+1,casa.i+1]
-        j_prox = [casa.j-1,casa.j+1,casa.j-1,casa.j+1]
-
-        for i in range(4):
-            if self.casas_matriz[i_prox[i]][j_prox[i]].ocupado == None:
-                self.casas_matriz[i_prox[i]][j_prox[i]].disponivel = True
-                self.casas_matriz[i_prox[i]][j_prox[i]].color = "yellow"
+        for i in range(casa.i-1, casa.i+2):
+            for j in range(casa.j-1, casa.j+2):
+                if i >= 0 and i < 8 and j >=0 and j < 8:
+                    if self.casas_matriz[i][j].ocupado == None and self.casas_matriz[i][j].color == self.cor1:
+                        self.casas_dispo.append(self.casas_matriz[i][j])
+                        self.casas_matriz[i][j].disponivel = True
+                        self.casas_matriz[i][j].color = "yellow"
 
     def reset(self):
-        pass
+        for casa in self.casas_dispo:
+            casa.color = self.cor1
+            casa.disponivel = False
+            self.atualizar_matriz_casas_reset(casa.i,casa.j,casa)
 
 
         

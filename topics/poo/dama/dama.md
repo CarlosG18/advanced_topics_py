@@ -4,7 +4,7 @@ para criarmos o jogo da dama precisamos de alguns elementos principais para a re
 
 ## Tabuleiro
 
-![Imagem do tabuleiro da Dama](https://github.com/CarlosG18/advanced_topics_py/blob/main/topics/poo/dama/imgs/tabueiro_dama.jpg)
+![Imagem do tabuleiro da Dama](https://github.com/CarlosG18/advanced_topics_py/blob/main/topics/poo/dama/imgs/tabuleiro_dama.jpg)
 
 inicialmente a estrategia que irei usar para a criação do tabuleiro será a seguinte:
 

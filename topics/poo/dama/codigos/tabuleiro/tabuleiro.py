@@ -2,6 +2,9 @@ import pygame
 from .casa import Casa
 from .peca import Peca
 
+def load_music(caminho):
+    pygame.mixer.music.load(caminho)
+
 class Tabuleiro:
     def __init__(self, tam, cor1, cor2):
         self.tam = tam
@@ -17,7 +20,7 @@ class Tabuleiro:
         self.ajust_tam()
         self.create_casas()
         self.click = False
-
+        self.peca_kill = None
 
     def set_prox_jogada(self):
         if self.prox_jogada == 1:
@@ -64,8 +67,6 @@ class Tabuleiro:
                     peca.player = 1
                     self.casas_matriz[i][j].set_ocupado(peca)
                     self.casas_matriz[i][j].player = 1
-                    #self.pecas_player1.append(self.casas_matriz[i][j])
-                #print(f'casa[{i}][{j}] (x={self.matriz_pos[i][j]["x"]}, y={self.matriz_pos[i][j]["y"]}) cor = {self.casas_matriz[i][j]["casa"].color}')
 
         #criando as pecas do player 2
         for i in range(5,8):
@@ -75,8 +76,6 @@ class Tabuleiro:
                     peca.player = 2
                     self.casas_matriz[i][j].set_ocupado(peca)
                     self.casas_matriz[i][j].player = 2
-                    #self.pecas_player2.append(self.casas_matriz[i][j])
-            
 
     def show(self, screen):
         for i in range(8):
@@ -117,6 +116,11 @@ class Tabuleiro:
         self.casas_matriz[i][j].color = "yellow"
         self.casas_matriz[i][j].select = True
 
+    def remove_peca_kill(self):
+        if self.peca_kill is not None and self.peca_kill.ocupado is not None:
+            self.peca_kill.ocupado = None
+            self.casas_matriz[self.peca_kill.i][self.peca_kill.j] = self.peca_kill
+
     def realizar_jogada(self, casa):
         self.casa_atual.ocupado.posX = self.matriz_pos[casa.i][casa.j]["x"]
         self.casa_atual.ocupado.posY = self.matriz_pos[casa.i][casa.j]["y"]
@@ -127,9 +131,12 @@ class Tabuleiro:
         casa.disponivel = False
         self.set_prox_jogada()
         self.reset()
-        pass
+        self.remove_peca_kill()
+        load_music('./assets/movimento.mp3')
+        pygame.mixer.music.play()
+        #pygame.mixer.music.play()
 
-    def check_click(self, pos, screen):
+    def check_click(self, pos):
         i, j = self.get_casa_click(pos)
         casa = self.casas_matriz[i][j]
 
@@ -156,45 +163,48 @@ class Tabuleiro:
             chave = 1
         else:
             chave = -1
-        print(chave)
-        print(detalhes)
-        #if self.prox_jogada == 1:
+        print(f'chave {chave} - {detalhes}')
+        
         if detalhes["activate"]:
             if detalhes["direction"] == "right":
                 if casa.j+1 < 7:
                     if self.casas_matriz[casa.i+1*chave][casa.j+1].ocupado == None:
                         self.activate_disponivel(casa.i+(1*chave),casa.j+1)
+                        self.peca_kill = casa
             else:
                 if casa.j-1 > 0:
-                    if self.casas_matriz[casa.i+1*chave][casa.j+1].ocupado == None:
+                    if self.casas_matriz[casa.i+1*chave][casa.j-1].ocupado == None:
                         self.activate_disponivel(casa.i+(1*chave),casa.j-1)
+                        self.peca_kill = casa
 
         else:
             #primeira possibilidade: 1 caminho para a esquerda
             if casa.j+1 > 7:
-                print('entrou no 1')
+                print("caminho 1")
                 if self.casas_matriz[casa.i+(1*chave)][casa.j-1].ocupado is not None:
-                    detalhe = {
-                    "activate": True,
-                    "direction": "left",
-                    }
-                    self.show_jogadas(self.casas_matriz[casa.i+(1*chave)][casa.j-1], detalhe)
+                    if self.casas_matriz[casa.i+(1*chave)][casa.j-1].player != self.prox_jogada:
+                        detalhe = {
+                            "activate": True,
+                            "direction": "left",
+                        }
+                        self.show_jogadas(self.casas_matriz[casa.i+(1*chave)][casa.j-1], detalhe)
                 else:
                     self.activate_disponivel(casa.i+1*chave,casa.j-1)
             #segunda possibilidade: 1 caminho para a direita
             elif casa.j-1 < 0:
-                print('entrou no 2')
+                print("caminho 2")
                 if self.casas_matriz[casa.i+(1*chave)][casa.j+1].ocupado is not None:
-                    detalhe = {
-                    "activate": True,
-                    "direction": "right",
-                    }
-                    self.show_jogadas(self.casas_matriz[casa.i+(1*chave)][casa.j-1], detalhe)
+                    if self.casas_matriz[casa.i+(1*chave)][casa.j+1].player != self.prox_jogada:
+                        detalhe = {
+                            "activate": True,
+                            "direction": "right",
+                        }
+                        self.show_jogadas(self.casas_matriz[casa.i+(1*chave)][casa.j+1], detalhe)
                 else:
                     self.activate_disponivel(casa.i+(1*chave),casa.j+1)
             #terceira possibilidade: 2 caminhos (direita e esquerda)
             else:
-                print('entrou no 3')
+                print("caminho 3")
                 if self.casas_matriz[casa.i+(1*chave)][casa.j+1].ocupado is not None:
                     if self.casas_matriz[casa.i+(1*chave)][casa.j+1].player != self.prox_jogada:
                         detalhe = {
@@ -214,7 +224,8 @@ class Tabuleiro:
                         self.show_jogadas(self.casas_matriz[casa.i+(1*chave)][casa.j-1], detalhe)
                 else:
                     self.activate_disponivel(casa.i+(1*chave),casa.j-1)
-
+                
+                    
     def reset(self):
         self.casa_atual.color = self.cor1
         for casa in self.casas_dispo:
@@ -224,4 +235,9 @@ class Tabuleiro:
 
     def check_kill(self):
         return True
+    
+    def print_infos(self):
+        for i in range(8):
+            for j in range(8):
+                print(self.casas_matriz[i][j])
         

@@ -1,19 +1,25 @@
 from .tabuleiro import Tabuleiro
+import pytest
 
 @pytest.fixture
 def tabuleiro_inicial():
   return Tabuleiro(1280,(0,153,0),(200,0,0))
   
 def test_show_jogadas(tabuleiro_inicial):
-    # Defina o estado inicial ou forneça os valores necessários
-    casa_inicial = tabuleiro_inicial.casas_matriz[0][1]
-    detalhes = {"activate": True, "direction": "right"}
-
-    # Execute a função que você deseja testar
+    #caso 1 - quina esquerdo
+    casa_inicial = tabuleiro_inicial.casas_matriz[1][0]
+    detalhes = {"activate": False, "direction": None}
     tabuleiro_inicial.show_jogadas(casa_inicial, detalhes)
+    assert tabuleiro_inicial.casas_matriz[casa_inicial.i+1][casa_inicial.j+1].disponivel == False
 
-    # Adicione asserções para verificar se o resultado é o esperado
-    assert casa_inicial.player == 1
-    # Certifique-se de incluir asserções apropriadas para o seu caso
+    #caso 2 - quina direita
+    casa_inicial = tabuleiro_inicial.casas_matriz[0][7]
+    detalhes = {"activate": False, "direction": None}
+    tabuleiro_inicial.show_jogadas(casa_inicial, detalhes)
+    assert tabuleiro_inicial.casas_matriz[casa_inicial.i+1][casa_inicial.j-1].disponivel == False
 
-  
+    #caso 3 - peca sem movimentos
+    casa_inicial = tabuleiro_inicial.casas_matriz[1][2]
+    detalhes = {"activate": False, "direction": None}
+    tabuleiro_inicial.show_jogadas(casa_inicial, detalhes)
+    assert tabuleiro_inicial.casas_matriz[casa_inicial.i+1][casa_inicial.j+1].disponivel == False and tabuleiro_inicial.casas_matriz[casa_inicial.i+1][casa_inicial.j-1].disponivel == False

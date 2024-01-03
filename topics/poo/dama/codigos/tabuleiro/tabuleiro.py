@@ -120,6 +120,7 @@ class Tabuleiro:
         if self.peca_kill is not None and self.peca_kill.ocupado is not None:
             self.peca_kill.ocupado = None
             self.casas_matriz[self.peca_kill.i][self.peca_kill.j] = self.peca_kill
+        self.peca_kill = None
 
     def realizar_jogada(self, casa):
         self.casa_atual.ocupado.posX = self.matriz_pos[casa.i][casa.j]["x"]
@@ -167,12 +168,12 @@ class Tabuleiro:
         
         if detalhes["activate"]:
             if detalhes["direction"] == "right":
-                if casa.j+1 < 7:
+                if casa.j+1 <= 7:
                     if self.casas_matriz[casa.i+1*chave][casa.j+1].ocupado == None:
                         self.activate_disponivel(casa.i+(1*chave),casa.j+1)
                         self.peca_kill = casa
             else:
-                if casa.j-1 > 0:
+                if casa.j-1 >= 0:
                     if self.casas_matriz[casa.i+1*chave][casa.j-1].ocupado == None:
                         self.activate_disponivel(casa.i+(1*chave),casa.j-1)
                         self.peca_kill = casa

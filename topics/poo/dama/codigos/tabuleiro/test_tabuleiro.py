@@ -23,3 +23,6 @@ def test_show_jogadas(tabuleiro_inicial):
     detalhes = {"activate": False, "direction": None}
     tabuleiro_inicial.show_jogadas(casa_inicial, detalhes)
     assert tabuleiro_inicial.casas_matriz[casa_inicial.i+1][casa_inicial.j+1].disponivel == False and tabuleiro_inicial.casas_matriz[casa_inicial.i+1][casa_inicial.j-1].disponivel == False
+
+    #caso 4 
+    

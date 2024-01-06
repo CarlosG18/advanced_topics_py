@@ -14,3 +14,4 @@ class Peca:
 
     def __str__(self):
         return f'peca do player {self.player} da cor {self.cor}'
+    

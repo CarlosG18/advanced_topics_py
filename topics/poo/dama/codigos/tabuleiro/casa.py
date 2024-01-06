@@ -22,4 +22,4 @@ class Casa:
         self.ocupado = peca
 
     def __str__(self):
-        return f'casa[{self.i}][{self.j}] (player {self.player}) ocupado = {self.ocupado} - disponivel {self.disponivel}'
+        return f'casa[{self.i}][{self.j}] (player {self.player})'

@@ -122,9 +122,7 @@ class Tabuleiro:
         casa.ocupado = self.casa_atual.ocupado
         casa.player = self.prox_jogada
         self.casa_atual.ocupado = None
-        # removendo peça
-        #if self.tag_kill:
-            #self.remove_peca_kill()
+        self.atualizar_matriz_casas(casa.i,casa.j,casa)
         #limpando as casa disponiveis e a casa selecionada
         self.clear_disponivel()
         self.casa_deselect()
@@ -146,15 +144,15 @@ class Tabuleiro:
         pass
 
     def check_priority(self, player):
-        print(f'check priority para o player {player}')
+        #print(f'check priority para o player {player}')
         for i in range(8):
             for j in range(8):
                 if self.casas_matriz[i][j].player == player:
                     resposta = self.check_kill(self.casas_matriz[i][j])
-                    print(f'peça {self.casas_matriz[i][j]} - check prioridade {resposta}')
+                    #print(f'peça {self.casas_matriz[i][j]} - check prioridade {resposta}')
                     if resposta["kill"]:
                         return self.casas_matriz[i][j]
-        print("\n")
+        #print("\n")
 
     def check_kill(self, casa):
         detalhes = {
@@ -168,6 +166,7 @@ class Tabuleiro:
                 #verificando o canto superior esquerdo   
                 if not self.casa_is_none(casa.i-1,casa.j-1) and not self.casa_is_player(casa.i-1,casa.j-1):
                     if self.casa_is_none(casa.i-2,casa.j-2):
+                        print(f'entrou {casa}')
                         detalhes["kill"] = True
                         infos = {
                             "i": int(casa.i-2),
@@ -179,10 +178,11 @@ class Tabuleiro:
                             "j": int(casa.j-1),
                         }
                         detalhes["kill_peca"] = infos_kill_peca
-            elif casa.j + 2 < 8:
+            if casa.j + 2 < 8:
                 #verificado o canto superior direito
                 if not self.casa_is_none(casa.i-1,casa.j+1) and not self.casa_is_player(casa.i-1,casa.j+1):
                     if self.casa_is_none(casa.i-2,casa.j+2):
+                        print(f'entrou {casa}')
                         detalhes["kill"] = True
                         infos = {
                             "i": int(casa.i-2),
@@ -199,6 +199,7 @@ class Tabuleiro:
                 #verificando o canto inferior esquerdo   
                 if not self.casa_is_none(casa.i+1,casa.j-1) and not self.casa_is_player(casa.i+1,casa.j-1):
                     if self.casa_is_none(casa.i+2,casa.j-2):
+                        print(f'entrou {casa}')
                         detalhes["kill"] = True
                         infos = {
                             "i": int(casa.i+2),
@@ -210,10 +211,11 @@ class Tabuleiro:
                             "j": int(casa.j-1),
                         }
                         detalhes["kill_peca"] = infos_kill_peca
-            elif casa.j + 2 < 8:
+            if casa.j + 2 < 8:
                 #verificado o canto inferior direito
                 if not self.casa_is_none(casa.i+1,casa.j+1) and not self.casa_is_player(casa.i+1,casa.j+1):
                     if self.casa_is_none(casa.i+2,casa.j+2):
+                        print(f'entrou {casa}')
                         detalhes["kill"] = True
                         infos = {
                             "i": int(casa.i+2),
@@ -228,27 +230,26 @@ class Tabuleiro:
         return detalhes
 
     def click_on(self, casa):
-        pass
-        
+        if self.casa_atual is not None:
+            self.casa_deselect()
+            self.clear_disponivel()
+        self.casa_atual = casa
+        self.casa_select(casa.i,casa.j)
+        self.show_jogadas(casa)
+    
     def check_click(self, pos):
         i, j = self.get_casa_click(pos)
         casa = self.casas_matriz[i][j]
 
         if not self.casa_is_none(i,j) and casa.player == self.prox_jogada:
-            '''if self.priority is not None:
+            if self.priority is not None:
                 if casa.i == self.priority.i and casa.j == self.priority.j:
                     self.click_on(casa)
             else:
                 self.click_on(casa)
-            '''
-            if self.casa_atual is not None:
-                self.casa_deselect()
-                self.clear_disponivel()
-            self.casa_atual = casa
-            self.casa_select(casa.i,casa.j)
-            self.show_jogadas(casa)
         elif casa.disponivel:
             self.realizar_jogada(casa)
+            #self.print_infos()
             self.priority = self.check_priority(self.prox_jogada)
             print(self.priority)
 
@@ -295,8 +296,6 @@ class Tabuleiro:
                     i = direcao["i"]
                     j = direcao["j"]
                     self.activate_disponivel(i,j)
-                #self.peca_kill = self.casas_matriz[detalhes["kill_peca"]["i"]][detalhes["kill_peca"]["j"]]
-                #self.tag_kill = True
             else:    
                 if not self.tag_kill and right:
                     self.activate_disponivel(casa.i+(1*chave),casa.j+1)
@@ -348,3 +347,7 @@ class Tabuleiro:
     def reset(self):
         pass
         
+    def print_infos(self):
+        for i in range(8):
+            for j in range(8):
+                print(self.casas_matriz[i][j])

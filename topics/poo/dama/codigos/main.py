@@ -5,7 +5,7 @@ from tabuleiro.tabuleiro import Tabuleiro
 
 # pygame setup
 pygame.init()
-fonte = pygame.font.Font(None, 36)
+fonte = pygame.font.Font(None, 20)
 tam_tela = 720
 screen = pygame.display.set_mode((1280,tam_tela))
 #screen = pygame.display.set_mode((tam_tela,tam_tela))
@@ -41,7 +41,7 @@ while running:
     escrever_texto(f'player 1 : cor preto', 850, 100, "yellow")
     escrever_texto(f'player 2 : cor branco', 850, 200, "yellow")
     escrever_texto(f'movimento: player {tabuleiro.prox_jogada}', 850, 300, (255,255,255))
-    escrever_texto(f'tag_kill {tabuleiro.tag_kill}', 850, 400, (255,255,255))
+    escrever_texto(f'tag_kill {tabuleiro.priority}', 850, 400, (255,255,255))
     # flip() the display to put your work on screen
     pygame.display.flip()
     clock.tick(60)  # limits FPS to 60

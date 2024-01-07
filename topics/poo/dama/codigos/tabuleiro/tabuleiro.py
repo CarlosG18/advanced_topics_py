@@ -24,7 +24,8 @@ class Tabuleiro:
         self.peca_kill = None
         self.tag_kill = False
         self.tag_jogada = False
-        self.priority = None
+        #self.priority = None
+        self.priority = []
 
     def set_prox_jogada(self):
         if self.prox_jogada == 1:
@@ -140,17 +141,14 @@ class Tabuleiro:
             self.atualizar_matriz_casas(casa.i,casa.j,casa)
         self.casas_dispo = []
 
-    def verify_prox_jogada(self,casa):
-        pass
-
     def check_priority(self, player):
+        self.priority = []
         for i in range(8):
             for j in range(8):
                 if self.casas_matriz[i][j].player == player:
                     resposta = self.check_kill(self.casas_matriz[i][j])
                     if resposta["kill"]:
-                        return self.casas_matriz[i][j]
-        return None
+                        self.priority.append(self.casas_matriz[i][j])
 
     def check_kill(self, casa):
         detalhes = {
@@ -245,9 +243,10 @@ class Tabuleiro:
         casa = self.casas_matriz[i][j]
 
         if not self.casa_is_none(i,j) and casa.player == self.prox_jogada:
-            if self.priority is not None:
-                if casa.i == self.priority.i and casa.j == self.priority.j:
-                    self.click_on(casa)
+            if not (self.priority == []):
+                for casa_p in self.priority:
+                    if casa.i == casa_p.i and casa.j == casa_p.j:
+                        self.click_on(casa)
             else:
                 self.click_on(casa)
         elif casa.disponivel:
@@ -255,7 +254,7 @@ class Tabuleiro:
             if self.tag_kill:
                 self.remove_peca_kill()
             self.check_continue_player(casa)
-            self.priority = self.check_priority(self.prox_jogada)
+            self.check_priority(self.prox_jogada)
              
     def activate_disponivel(self, i,j):
         self.casas_matriz[i][j].color = "yellow"
@@ -269,29 +268,38 @@ class Tabuleiro:
         else:
             chave = -1
         
-        #print(f'function show_jogadas {casa}')
-        
         #primeira possibilidade: 1 caminho para a esquerda
         if casa.j+1 > 7:
-            #print("caminho 1")
             if not self.casa_is_none(casa.i+(1*chave),casa.j-1):
                 if not self.casa_is_player(casa.i+(1*chave),casa.j-1):
-                    pass
+                    detalhes = self.check_kill(casa)
+                    if detalhes["kill"]:
+                        self.tag_kill = True
+                        self.peca_kill = self.casas_matriz[detalhes["kill_peca"]["i"]][detalhes["kill_peca"]["j"]]
+                        for direcao in detalhes["directions"]:
+                            i = direcao["i"]
+                            j = direcao["j"]
+                            self.activate_disponivel(i,j)
             else:
                 self.activate_disponivel(casa.i+1*chave,casa.j-1)
         #segunda possibilidade: 1 caminho para a direita
         elif casa.j-1 < 0:
-            #print("caminho 2")
             if not self.casa_is_none(casa.i+(1*chave),casa.j+1):
                 if not self.casa_is_player(casa.i+(1*chave),casa.j+1):
-                    pass
+                    detalhes = self.check_kill(casa)
+                    if detalhes["kill"]:
+                        self.tag_kill = True
+                        self.peca_kill = self.casas_matriz[detalhes["kill_peca"]["i"]][detalhes["kill_peca"]["j"]]
+                        for direcao in detalhes["directions"]:
+                            i = direcao["i"]
+                            j = direcao["j"]
+                            self.activate_disponivel(i,j)
             else:
                 self.activate_disponivel(casa.i+(1*chave),casa.j+1)
         #terceira possibilidade: 2 caminhos (direita e esquerda)
         else:
             right, left = self.casas_prox_none(casa,chave)
             detalhes = self.check_kill(casa)
-            print(detalhes)
 
             if detalhes["kill"]:
                 self.tag_kill = True
@@ -306,18 +314,11 @@ class Tabuleiro:
 
                 if not self.tag_kill and left:
                     self.activate_disponivel(casa.i+(1*chave),casa.j-1)
-        '''
-        print(f'casas disponveis: ')
-        for casa in self.casas_dispo:
-            print(f'{casa}')
-        print("\n")
-        '''
         
     def show_jogadas_continue(self):
         pass
         
     def casa_is_none(self, i,j):
-        #print(f'function casa_is_none {self.casas_matriz[i][j]}')
         if self.casas_matriz[i][j].ocupado == None:
             return True
         else:
@@ -344,11 +345,3 @@ class Tabuleiro:
                 left = True
 
         return (right, left)
-
-    def reset(self):
-        pass
-        
-    def print_infos(self):
-        for i in range(8):
-            for j in range(8):
-                print(self.casas_matriz[i][j])

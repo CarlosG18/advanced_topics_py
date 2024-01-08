@@ -115,6 +115,7 @@ class Tabuleiro:
             self.peca_kill.player = None
             self.casas_matriz[self.peca_kill.i][self.peca_kill.j] = self.peca_kill
         self.peca_kill = None
+        load_music('./assets/ze.mp3')
 
     def realizar_jogada(self, casa):
         #alterando a posição da peça para a casa disponivel selecionada
@@ -131,6 +132,7 @@ class Tabuleiro:
         self.casa_deselect()
         #atualizando a matriz de casas (porque a casa atual foi alterada)
         self.atualizar_casa_atual()
+        self.casa_atual = None
         #executar o som de movimento
         load_music('./assets/movimento.mp3')
 

@@ -15,7 +15,8 @@ inicialmente a estrategia que irei usar para a criação do tabuleiro será a se
 
 - A peça esta capturando para "tras";
 - bug quando uma peça pode capturar duas peças ao mesmo tempo;
-- indicie fora do range da matriz das casas:
+- bug em relação a peça a ser capturada quando a peça fez uma captura recente e possui duas possiveis peças para ele capturar, com o bug, o jogo não esta alterando a peça que será capturada.
+- indicie fora do range da matriz das casas **done**:
 
 ```bash
 Traceback (most recent call last):
@@ -32,7 +33,10 @@ Traceback (most recent call last):
 IndexError: list index out of range
 ```
 
+## Futuras implementações
+
 - Implementar a funçao da dama.
 - Implementar o tempo para cada jogador.
 - Implementar o ganhador do jogo.
+- implementar o recomeçar.
 

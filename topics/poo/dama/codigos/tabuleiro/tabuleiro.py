@@ -24,8 +24,8 @@ class Tabuleiro:
         self.peca_kill = None
         self.tag_kill = False
         self.tag_jogada = False
-        #self.priority = None
         self.priority = []
+        self.modo_dama = []
 
     def set_prox_jogada(self):
         if self.prox_jogada == 1:
@@ -85,7 +85,6 @@ class Tabuleiro:
     def show(self, screen):
         for i in range(8):
             for j in range(8):
-                #print(f'casa[{i}][{j}] (x={self.casas_matriz[i][j]["casa"].x}, y={self.casas_matriz[i][j]["casa"].y}) cor = {self.casas_matriz[i][j]["casa"].color}')
                 self.casas_matriz[i][j].create(screen)
                 if self.casas_matriz[i][j].ocupado is not None:
                     self.casas_matriz[i][j].ocupado.show(screen)
@@ -341,17 +340,11 @@ class Tabuleiro:
                     right = True
                 if self.casa_is_none(casa.i+(1*chave),casa.j-1):
                     left = True
-            else:
-                #ativa o modo dama do player1
-                pass
         else:
             if not casa.i - 1 < 0:
                 if self.casa_is_none(casa.i+(1*chave),casa.j+1):
                     right = True
                 if self.casa_is_none(casa.i+(1*chave),casa.j-1):
                     left = True
-            else:
-                #ativa o modo dama do player2
-                pass
 
         return (right, left)

@@ -94,6 +94,13 @@ while running:
     else:
         escrever_texto(f'Nenhuma peça selecionada', 780, 380, "black")
 
+    escrever_texto(f'peças com o modo dama ativado:', 780, 420, "black")
+    if tabuleiro.modo_dama:
+        for index, casa in enumerate(tabuleiro.modo_dama):
+            escrever_texto(f'casas prioritaria {casa}', 780, 420+(index*20), "black")
+    else:
+        escrever_texto(f'nenhuma peça com o modo dama', 780, 440, "red")
+
     # flip() the display to put your work on screen
     pygame.display.flip()
     clock.tick(60)  # limits FPS to 60

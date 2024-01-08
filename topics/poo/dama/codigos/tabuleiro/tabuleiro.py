@@ -336,14 +336,22 @@ class Tabuleiro:
         right = False
         left = False
         if chave == 1:
-            if self.casa_is_none(casa.i+(1*chave),casa.j+1):
-                right = True
-            if self.casa_is_none(casa.i+(1*chave),casa.j-1):
-                left = True
+            if not casa.i + 1 >= 8:
+                if self.casa_is_none(casa.i+(1*chave),casa.j+1):
+                    right = True
+                if self.casa_is_none(casa.i+(1*chave),casa.j-1):
+                    left = True
+            else:
+                #ativa o modo dama do player1
+                pass
         else:
-            if self.casa_is_none(casa.i+(1*chave),casa.j+1):
-                right = True
-            if self.casa_is_none(casa.i+(1*chave),casa.j-1):
-                left = True
+            if not casa.i - 1 < 0:
+                if self.casa_is_none(casa.i+(1*chave),casa.j+1):
+                    right = True
+                if self.casa_is_none(casa.i+(1*chave),casa.j-1):
+                    left = True
+            else:
+                #ativa o modo dama do player2
+                pass
 
         return (right, left)

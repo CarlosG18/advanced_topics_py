@@ -21,9 +21,9 @@ class Tabuleiro:
         self.ajust_tam()
         self.create_casas()
         self.click = False
+        self.dados_kill = None
         self.peca_kill = None
         self.tag_kill = False
-        self.tag_jogada = False
         self.priority = []
         self.modo_dama = []
 
@@ -151,75 +151,45 @@ class Tabuleiro:
                     if resposta["kill"]:
                         self.priority.append(self.casas_matriz[i][j])
 
+    def check_kill_casa(self, i, j, sinal_i, sinal_j, detalhes):
+        if not self.casa_is_none(i,j) and not self.casa_is_player(i,j):
+            if self.casa_is_none(i+(1*sinal_i),j+(1*sinal_j)):
+                detalhes["kill"] = True
+                infos = {
+                    "i": i+(1*sinal_i),
+                    "j": j+(1*sinal_j),
+                }
+                detalhes["directions"].append(infos)
+                infos_kill_peca = {
+                    "i": i,
+                    "j": j,
+                }
+                detalhes["kill_peca"] = infos_kill_peca
+        
+        return detalhes
+
     def check_kill(self, casa):
         detalhes = {
             "kill": False,
             "directions": [],
             "kill_peca": None,
         }
-    
         if casa.i - 2 >= 0:
             if casa.j - 2 >=0:
-                #verificando o canto superior esquerdo   
-                if not self.casa_is_none(casa.i-1,casa.j-1) and not self.casa_is_player(casa.i-1,casa.j-1):
-                    if self.casa_is_none(casa.i-2,casa.j-2):
-                        detalhes["kill"] = True
-                        infos = {
-                            "i": int(casa.i-2),
-                            "j": int(casa.j-2),
-                        }
-                        detalhes["directions"].append(infos)
-                        infos_kill_peca = {
-                            "i": int(casa.i-1),
-                            "j": int(casa.j-1),
-                        }
-                        detalhes["kill_peca"] = infos_kill_peca
+                #verificando o canto superior esquerdo
+                detalhes = self.check_kill_casa(casa.i-1,casa.j-1,-1,-1, detalhes)
             if casa.j + 2 < 8:
                 #verificado o canto superior direito
-                if not self.casa_is_none(casa.i-1,casa.j+1) and not self.casa_is_player(casa.i-1,casa.j+1):
-                    if self.casa_is_none(casa.i-2,casa.j+2):
-                        detalhes["kill"] = True
-                        infos = {
-                            "i": int(casa.i-2),
-                            "j": int(casa.j+2),
-                        }
-                        detalhes["directions"].append(infos)
-                        infos_kill_peca = {
-                            "i": int(casa.i-1),
-                            "j": int(casa.j+1),
-                        }
-                        detalhes["kill_peca"] = infos_kill_peca
+                detalhes = self.check_kill_casa(casa.i-1,casa.j+1,-1,1, detalhes)
+                
         if casa.i + 2 < 8:
             if casa.j - 2 >=0:
                 #verificando o canto inferior esquerdo   
-                if not self.casa_is_none(casa.i+1,casa.j-1) and not self.casa_is_player(casa.i+1,casa.j-1):
-                    if self.casa_is_none(casa.i+2,casa.j-2):
-                        detalhes["kill"] = True
-                        infos = {
-                            "i": int(casa.i+2),
-                            "j": int(casa.j-2),
-                        }
-                        detalhes["directions"].append(infos)
-                        infos_kill_peca = {
-                            "i": int(casa.i+1),
-                            "j": int(casa.j-1),
-                        }
-                        detalhes["kill_peca"] = infos_kill_peca
+                detalhes = self.check_kill_casa(casa.i+1,casa.j-1,1,-1, detalhes)
             if casa.j + 2 < 8:
                 #verificado o canto inferior direito
-                if not self.casa_is_none(casa.i+1,casa.j+1) and not self.casa_is_player(casa.i+1,casa.j+1):
-                    if self.casa_is_none(casa.i+2,casa.j+2):
-                        detalhes["kill"] = True
-                        infos = {
-                            "i": int(casa.i+2),
-                            "j": int(casa.j+2),
-                        }
-                        detalhes["directions"].append(infos)
-                        infos_kill_peca = {
-                            "i": int(casa.i+1),
-                            "j": int(casa.j+1),
-                        }
-                        detalhes["kill_peca"] = infos_kill_peca
+                detalhes = self.check_kill_casa(casa.i+1,casa.j+1,1,1, detalhes)
+                
         return detalhes
 
     def click_on(self, casa):

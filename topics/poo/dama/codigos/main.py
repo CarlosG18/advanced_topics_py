@@ -49,7 +49,7 @@ while running:
         if pygame.mouse.get_pos()[0] <= 720:
             tabuleiro.check_click(pygame.mouse.get_pos())
             pygame.time.wait(200)
-        print(pygame.mouse.get_pos())
+        #print(pygame.mouse.get_pos())
 
     
 
@@ -75,6 +75,8 @@ while running:
     else:
         escrever_texto(f'Nenhuma peça a ser capturada', 780, 200, "black")
     
+    escrever_texto(f'Tag kill = {tabuleiro.tag_kill}', 1100, 200, "black")
+
     escrever_texto(f'casas disponiveis:', 780, 230, "black")
     if tabuleiro.casas_dispo:
         for index, casa in enumerate(tabuleiro.casas_dispo):

@@ -16,12 +16,10 @@ class Tabuleiro:
         self.matriz_pos = []
         self.tam_casa = None
         self.prox_jogada = 1
-        self.modo = "select"
         self.casa_atual = None
         self.ajust_tam()
         self.create_casas()
         self.click = False
-        self.dados_kill = None
         self.peca_kill = None
         self.tag_kill = False
         self.priority = []
@@ -302,9 +300,6 @@ class Tabuleiro:
 
                 if not self.tag_kill and left:
                     self.activate_disponivel(casa.i+(1*chave),casa.j-1)
-        
-    def show_jogadas_continue(self):
-        pass
         
     def casa_is_none(self, i,j):
         if self.casas_matriz[i][j].ocupado == None:

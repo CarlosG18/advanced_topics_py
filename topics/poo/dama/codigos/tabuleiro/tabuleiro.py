@@ -174,21 +174,38 @@ class Tabuleiro:
             "directions": [],
             "kill_peca": None,
         }
-        if casa.i - 2 >= 0:
-            if casa.j - 2 >=0:
-                #verificando o canto superior esquerdo
-                detalhes = self.check_kill_casa(casa.i-1,casa.j-1,-1,-1, detalhes)
-            if casa.j + 2 < 8:
-                #verificado o canto superior direito
-                detalhes = self.check_kill_casa(casa.i-1,casa.j+1,-1,1, detalhes)
-                
-        if casa.i + 2 < 8:
-            if casa.j - 2 >=0:
-                #verificando o canto inferior esquerdo   
-                detalhes = self.check_kill_casa(casa.i+1,casa.j-1,1,-1, detalhes)
-            if casa.j + 2 < 8:
-                #verificado o canto inferior direito
-                detalhes = self.check_kill_casa(casa.i+1,casa.j+1,1,1, detalhes)
+        if self.tag_kill:
+            if casa.i - 2 >= 0:
+                if casa.j - 2 >=0:
+                    #verificando o canto superior esquerdo
+                    detalhes = self.check_kill_casa(casa.i-1,casa.j-1,-1,-1, detalhes)
+                if casa.j + 2 < 8:
+                    #verificado o canto superior direito
+                    detalhes = self.check_kill_casa(casa.i-1,casa.j+1,-1,1, detalhes)
+                    
+            if casa.i + 2 < 8:
+                if casa.j - 2 >=0:
+                    #verificando o canto inferior esquerdo   
+                    detalhes = self.check_kill_casa(casa.i+1,casa.j-1,1,-1, detalhes)
+                if casa.j + 2 < 8:
+                    #verificado o canto inferior direito
+                    detalhes = self.check_kill_casa(casa.i+1,casa.j+1,1,1, detalhes)
+        elif self.prox_jogada == 1:
+            if casa.i + 2 < 8:
+                if casa.j - 2 >=0:
+                    #verificando o canto inferior esquerdo   
+                    detalhes = self.check_kill_casa(casa.i+1,casa.j-1,1,-1, detalhes)
+                if casa.j + 2 < 8:
+                    #verificado o canto inferior direito
+                    detalhes = self.check_kill_casa(casa.i+1,casa.j+1,1,1, detalhes)
+        else:
+            if casa.i - 2 >= 0:
+                if casa.j - 2 >=0:
+                    #verificando o canto superior esquerdo
+                    detalhes = self.check_kill_casa(casa.i-1,casa.j-1,-1,-1, detalhes)
+                if casa.j + 2 < 8:
+                    #verificado o canto superior direito
+                    detalhes = self.check_kill_casa(casa.i-1,casa.j+1,-1,1, detalhes)
                 
         return detalhes
 

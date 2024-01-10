@@ -1,6 +1,5 @@
 import pygame
-#from game import Game
-from nave import Nave
+from game import Game
 
 #setup 
 pygame.init()
@@ -8,11 +7,10 @@ screen = pygame.display.set_mode((1280,720))
 clock = pygame.time.Clock()
 running = True
 
-#game = Game()
+img_fundo = pygame.image.load("assets/cenarios/cenario.jpeg").convert_alpha()
+img_fundo = pygame.transform.scale(img_fundo,(1280,720))
 
-sprites_nave = pygame.sprite.Group()
-nave_principal = Nave()
-sprites_nave.add(nave_principal)
+game = Game()
 
 #loop
 while running:
@@ -20,21 +18,11 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    if pygame.key.get_pressed():
-        if pygame.key.get_pressed()[pygame.K_UP]:
-            nave_principal.move_up()
-        elif pygame.key.get_pressed()[pygame.K_DOWN]:
-            nave_principal.move_down()
-        elif pygame.key.get_pressed()[pygame.K_LEFT]:
-            nave_principal.move_left()
-        elif pygame.key.get_pressed()[pygame.K_RIGHT]:
-            nave_principal.move_right()
+    game.move_nave_principal(pygame.key.get_pressed())
 
-    screen.fill('black')
-    sprites_nave.update()
-    sprites_nave.draw(screen)
+    screen.blit(img_fundo,(0,0))
+    game.upgrade(screen)
     
-
     pygame.display.flip()
     clock.tick(60)
 

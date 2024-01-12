@@ -99,4 +99,3 @@ o atributo `nome` é um atributo público, ou seja, você consegue acessa-ló em
 ## Exercitando conceitos de POO
 
 - aplicando os conceitos de poo em python na criação de um jogo com o pygame [dama](https://github.com/CarlosG18/advanced_topics_py/blob/main/topics/poo/dama/dama.md)
-- aplicando os conceitos de poo em python na criação de um jogo com o pygame [SpaceFly](https://github.com/CarlosG18/advanced_topics_py/blob/main/topics/poo/spacefly/spacefly.md)

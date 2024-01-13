@@ -4,7 +4,7 @@ Em python temos os erros de sintaxe e as exeções. quando um código possui sua
 
 ## raise + Exception():
 
-Para criarmos uma exeção devemos usar a palavra chave `raise`, juntamente com o método `Exception()`. vamos ver isso em um exemplo:
+Para lançarmos uma exeção devemos usar a palavra chave `raise`, juntamente com o método `Exception()`. vamos ver isso em um exemplo:
 
 ```python
 def calcular_imc(peso, altura):
@@ -38,3 +38,31 @@ for i in range(10):
 Em resumo, raise é geralmente utilizado para levantar exceções em condições específicas, enquanto assert é mais voltado para verificar suposições durante o desenvolvimento e depuração.
 
 ## try + except
+
+essas duas palavras reservadas funcionam da seguinte maneira:
+
+```python
+try:
+  #irá realizar algo no seu codigo até uma exeção for encontrada, caso for enontrada interromperá o código instantaneamente e irá para o except
+except:
+  #caso houver uma exeção no código acima ele executará essa parte do código, caso contrário, o código seguirá o fluxo normal
+```
+
+## else
+
+quando não é encontrado nenhuma exeção no código podemos usar o `else` para tratar algo que não foi "parado" pelo try e except.
+
+```python
+try:
+  #irá realizar algo no seu codigo até uma exeção for encontrada
+except:
+  #caso houver uma exeção no codigo acima ele executará essa parte do codigo, caso contrario, o codigo seguirá o fluxo normal
+else:
+  #executa algo apos verificar o try e except
+```
+
+## finally
+
+essa palavra reservada é usada depois do `else` e ela sempre será executada, tendo exeções ou não. O uso típico do bloco `finally` é para garantir que determinadas operações, como fechar arquivos ou liberar recursos, sejam realizadas, mesmo se uma exceção ocorrer no bloco `try`.
+
+para finalizar essa seção será feito um programa que irá realizar cadastros de novos clientes. mais informações sobre o projeto [Projeto de Cadastramento]()

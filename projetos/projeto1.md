@@ -10,4 +10,4 @@ Será realizado uma interface simples para o cadastramento de novos clientes. ne
 2. conecte a um banco de dados postgresql;
 3. consuma a API com react;
 4. A interface deverá ser criada com o uso de react e tailwindcss;
-5. Use tratamento de exeções em seu códigos;
+5. Use tratamento de exeções e Regex em seu códigos;

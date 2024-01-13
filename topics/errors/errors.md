@@ -65,4 +65,4 @@ else:
 
 essa palavra reservada é usada depois do `else` e ela sempre será executada, tendo exceções ou não. O uso típico do bloco `finally` é para garantir que determinadas operações, como fechar arquivos ou liberar recursos, sejam realizadas, mesmo se uma exceção ocorrer no bloco `try`.
 
-para finalizar essa seção será feito um programa que irá realizar cadastros de novos clientes. mais informações sobre o projeto [Projeto de Cadastramento](https://github.com/CarlosG18/advanced_topics_py/blob/main/projetos/cadastramento/projeto1.md)
+para finalizar essa seção será feito um programa que irá realizar cadastros de novos clientes. mais informações sobre o projeto [Projeto de Cadastramento](https://github.com/CarlosG18/advanced_topics_py/blob/main/projetos/projeto1.md)

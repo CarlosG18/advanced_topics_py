@@ -1,35 +1,95 @@
 from .Element import Head, Body, Tail
+import pygame
 
 class Snake:
-    def __init__(self, tamanho, velo):
+    def __init__(self, tamanho, velo, vetor_posicoes):
         self.tamanho = tamanho
         self.velo = velo
-        self.direcao = "left"
+        self.direcao = None
+        self.head = None
         self.corpo = []
+        self.matriz_posicoes = self.get_vetor_posicoes(vetor_posicoes)
         self.create_snake()
 
+    def get_vetor_posicoes(self, vetor_elemet):
+        matriz = []
+        for elemento_linha in vetor_elemet:
+            linha_matriz = []
+            for elemento_coluna in elemento_linha:
+                posicao = {
+                    "x": elemento_coluna.y,
+                    "y": elemento_coluna.x,
+                }
+                linha_matriz.append(posicao)
+            matriz.append(linha_matriz)
+        return matriz
+            
+
     def create_snake(self):
-        cabeca = Head(0,0)
-        self.corpo.append(cabeca)
+        self.head = Head(self.matriz_posicoes[0][0]["x"],self.matriz_posicoes[0][0]["y"], 0, 0)
+        self.corpo.append(self.head)
         for i in range(1, self.tamanho):
-            body = Body(i*50,0)
+            body = Body(self.matriz_posicoes[i][0]["x"],self.matriz_posicoes[i][0]["y"], i, 0)
             self.corpo.append(body)
-        rabo = Tail(self.tamanho*50,0)
+        rabo = Tail(self.matriz_posicoes[self.tamanho][0]["x"],self.matriz_posicoes[self.tamanho][0]["y"], self.tamanho, 0)
         self.corpo.append(rabo)
 
+    def update_corpo(self):
+        self.corpo[0] = self.head
+
+
     def move(self):
+        #j == movimento de colunas
+        #i == movimento de linhas
+
+        #self.print_pos_head()
         if self.direcao == "left":
+            if self.head.j - 1 >= 0:
+                self.head.j -= 1
+            else:
+                self.head.j = len(self.matriz_posicoes[0])-1
+            self.head.update_pos(self.matriz_posicoes)
+            self.update_corpo()
+            #self.direcao = None
+            #pygame.time.delay(self.velo*100)
             for elemento in self.corpo:
-                elemento.element_rect.x -= self.velo
+                pass
         elif self.direcao == "right":
+            if self.head.j + 1 <= len(self.matriz_posicoes[0])-1:
+                self.head.j += 1
+            else:
+                self.head.j = 0
+            self.head.update_pos(self.matriz_posicoes)
+            self.update_corpo()
+            #self.direcao = None
+            #pygame.time.delay(self.velo*100)
             for elemento in self.corpo:
-                elemento.element_rect.x += self.velo
+                #elemento.element_rect.x += self.velo
+                pass
         elif self.direcao == "up":
+            if self.head.i - 1 >= 0:
+                self.head.i -= 1
+            else:
+                self.head.i = len(self.matriz_posicoes)-1
+            self.head.update_pos(self.matriz_posicoes)
+            self.update_corpo()
+            #self.direcao = None
+            #pygame.time.delay(self.velo*100)
             for elemento in self.corpo:
-                elemento.element_rect.y -= self.velo
+                #elemento.element_rect.y -= self.velo
+                pass
         elif self.direcao == "down":
+            if self.head.i + 1 <= len(self.matriz_posicoes)-1:
+                self.head.i += 1
+            else:
+                self.head.i = 0
+            self.head.update_pos(self.matriz_posicoes)
+            self.update_corpo()
+            #self.direcao = None
+            #pygame.time.delay(self.velo*100)
             for elemento in self.corpo:
-                elemento.element_rect.y += self.velo
+                pass
+                #elemento.element_rect.y += self.velo
 
     def show(self, screen):
         for element in self.corpo:
@@ -37,14 +97,25 @@ class Snake:
 
     def move_top(self):
         self.direcao = "up"
+        self.corpo[0].troca_img_element("./assets/Graphics/head_up.png")
     
     def move_left(self):
         self.direcao = "left"
+        self.corpo[0].troca_img_element("./assets/Graphics/head_left.png")
 
     def move_down(self):
         self.direcao = "down"
+        self.corpo[0].troca_img_element("./assets/Graphics/head_down.png")
 
     def move_right(self):
         self.direcao = "right"
+        self.corpo[0].troca_img_element("./assets/Graphics/head_right.png")
+
+    def print_snake(self):
+        for elemento_snake in self.corpo:
+            print(f'cobra[{elemento_snake.i}][{elemento_snake.j}] ')
+
+    def print_pos_head(self):
+        print(f'x = {self.head.i}, y = {self.head.j}')
 
     

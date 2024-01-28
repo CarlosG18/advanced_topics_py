@@ -8,6 +8,7 @@ class Snake:
         self.direcao = None
         self.head = None
         self.corpo = []
+        self.last_pos = None
         self.matriz_posicoes = self.get_vetor_posicoes(vetor_posicoes)
         self.create_snake()
 
@@ -26,71 +27,89 @@ class Snake:
             
 
     def create_snake(self):
-        self.head = Head(self.matriz_posicoes[0][0]["x"],self.matriz_posicoes[0][0]["y"], 0, 0)
+        self.head = Head(self.matriz_posicoes[0][0]["x"],self.matriz_posicoes[0][0]["y"], 0, 0, None)
         self.corpo.append(self.head)
-        for i in range(1, self.tamanho):
-            body = Body(self.matriz_posicoes[i][0]["x"],self.matriz_posicoes[i][0]["y"], i, 0)
+        for j in range(1, self.tamanho):
+            body = Body(self.matriz_posicoes[0][j]["x"],self.matriz_posicoes[0][j]["y"], 0, j, "left")
             self.corpo.append(body)
-        rabo = Tail(self.matriz_posicoes[self.tamanho][0]["x"],self.matriz_posicoes[self.tamanho][0]["y"], self.tamanho, 0)
+        rabo = Tail(self.matriz_posicoes[0][self.tamanho]["x"],self.matriz_posicoes[0][self.tamanho]["y"], 0, self.tamanho, "left")
         self.corpo.append(rabo)
 
     def update_corpo(self):
         self.corpo[0] = self.head
 
+    def update_direction(self):
+        for index in range(len(self.corpo)-1, 0, -1):
+            if index - 1 >= 0:
+                self.corpo[index].direction_prox_ele = self.corpo[index-1].direction_prox_ele
+
+    def move_body(self):
+        for index in range(1, len(self.corpo)):
+            if self.corpo[index].direction_prox_ele == "left":
+                if self.corpo[index].j - 1 >= 0:
+                    self.corpo[index].j -= 1
+                else:
+                    self.corpo[index].j = len(self.matriz_posicoes[0])-1
+                self.corpo[index].update_pos(self.matriz_posicoes)
+            elif self.corpo[index].direction_prox_ele == "right":
+                if self.corpo[index].j + 1 <= len(self.matriz_posicoes[0])-1:
+                    self.corpo[index].j += 1
+                else:
+                    self.corpo[index].j = 0
+                self.corpo[index].update_pos(self.matriz_posicoes)
+            elif self.corpo[index].direction_prox_ele == "up":
+                if self.corpo[index].i - 1 >= 0:
+                    self.corpo[index].i -= 1
+                else:
+                    self.corpo[index].i = len(self.matriz_posicoes)-1
+                self.corpo[index].update_pos(self.matriz_posicoes)
+            elif self.corpo[index].direction_prox_ele == "down":
+                if self.corpo[index].i + 1 <= len(self.matriz_posicoes)-1:
+                    self.corpo[index].i += 1
+                else:
+                    self.corpo[index].i = 0
+                self.corpo[index].update_pos(self.matriz_posicoes)
+        self.update_direction()
 
     def move(self):
         #j == movimento de colunas
         #i == movimento de linhas
 
-        #self.print_pos_head()
         if self.direcao == "left":
+            self.head.direction_prox_ele = "left"
             if self.head.j - 1 >= 0:
                 self.head.j -= 1
             else:
                 self.head.j = len(self.matriz_posicoes[0])-1
             self.head.update_pos(self.matriz_posicoes)
             self.update_corpo()
-            #self.direcao = None
-            #pygame.time.delay(self.velo*100)
-            for elemento in self.corpo:
-                pass
         elif self.direcao == "right":
+            self.head.direction_prox_ele = "right"
             if self.head.j + 1 <= len(self.matriz_posicoes[0])-1:
                 self.head.j += 1
             else:
                 self.head.j = 0
             self.head.update_pos(self.matriz_posicoes)
             self.update_corpo()
-            #self.direcao = None
-            #pygame.time.delay(self.velo*100)
-            for elemento in self.corpo:
-                #elemento.element_rect.x += self.velo
-                pass
         elif self.direcao == "up":
+            self.head.direction_prox_ele = "up"
             if self.head.i - 1 >= 0:
                 self.head.i -= 1
             else:
                 self.head.i = len(self.matriz_posicoes)-1
             self.head.update_pos(self.matriz_posicoes)
             self.update_corpo()
-            #self.direcao = None
-            #pygame.time.delay(self.velo*100)
-            for elemento in self.corpo:
-                #elemento.element_rect.y -= self.velo
-                pass
         elif self.direcao == "down":
+            self.head.direction_prox_ele = "down"
             if self.head.i + 1 <= len(self.matriz_posicoes)-1:
                 self.head.i += 1
             else:
                 self.head.i = 0
             self.head.update_pos(self.matriz_posicoes)
             self.update_corpo()
-            #self.direcao = None
-            #pygame.time.delay(self.velo*100)
-            for elemento in self.corpo:
-                pass
-                #elemento.element_rect.y += self.velo
-
+        self.last_pos = (self.head.i,self.head.j)
+        self.move_body()
+ 
     def show(self, screen):
         for element in self.corpo:
             element.show(screen)
@@ -113,7 +132,7 @@ class Snake:
 
     def print_snake(self):
         for elemento_snake in self.corpo:
-            print(f'cobra[{elemento_snake.i}][{elemento_snake.j}] ')
+            print(elemento_snake)
 
     def print_pos_head(self):
         print(f'x = {self.head.i}, y = {self.head.j}')

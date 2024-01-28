@@ -11,7 +11,7 @@ class Background:
         num_colunas = int(self.width/50)
         num_linhas = int(self.height/50)
 
-        print(f'numero de linhas = {num_linhas}, numero de colunas = {num_colunas}')
+        #print(f'numero de linhas = {num_linhas}, numero de colunas = {num_colunas}')
 
         for i in range(num_linhas):
             linha_matriz = []
@@ -19,11 +19,11 @@ class Background:
                 if (j+i) % 2 == 0:
                     elemento = Element_Back(i,j,i*50,j*50,(0,255,0))
                     linha_matriz.append(elemento)
-                    print(f'i={i}, j={j}')
+                    #print(f'i={i}, j={j}')
                 else:
                     elemento = Element_Back(i,j,i*50,j*50,(0,150,0))
                     linha_matriz.append(elemento)
-                    print(f'i={i}, j={j}')
+                    #print(f'i={i}, j={j}')
 
             self.vetor_elemet.append(linha_matriz)
 

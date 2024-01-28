@@ -32,24 +32,29 @@ while running:
 
     if pygame.key.get_pressed()[pygame.K_DOWN]:
         snake.move_down()
-        print("baixo")
+        snake.move()
+        pygame.time.wait(100)
+        
     elif pygame.key.get_pressed()[pygame.K_UP]:
         snake.move_top()
-        print("up")
+        snake.move()
+        pygame.time.wait(100)
+
     elif pygame.key.get_pressed()[pygame.K_LEFT]:
         snake.move_left()
-        print("left")
-
+        snake.move()
+        pygame.time.wait(100)
     elif pygame.key.get_pressed()[pygame.K_RIGHT]:
         snake.move_right()
-        print("down")
+        snake.move()
+        pygame.time.wait(100)
 
         
     # RENDER YOUR GAME HERE
     snake.show(screen)
-    snake.move()
+    #snake.move()
     # flip() the display to put your work on screen
     pygame.display.flip()
-    clock.tick(1)  # limits FPS to 60
+    clock.tick(60)  # limits FPS to 60
 
 pygame.quit()

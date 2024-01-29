@@ -26,6 +26,7 @@ class Element:
     def troca_img_element(self, url_img):
         self.url_img = url_img
         self.element = pygame.image.load(self.url_img)
+        self.element = pygame.transform.scale(self.element, (self.width,self.height))
     
     def update_pos(self, matriz):
         self.x = matriz[self.i][self.j]["x"]

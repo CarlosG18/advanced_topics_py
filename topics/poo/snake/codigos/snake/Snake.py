@@ -41,7 +41,30 @@ class Snake:
     def update_direction(self):
         for index in range(len(self.corpo)-1, 0, -1):
             if index - 1 >= 0:
+                #troca do tail da snake
+                if index == len(self.corpo)-1:
+                    if self.corpo[index-1].direction_prox_ele == "left":
+                        self.corpo[index].troca_img_element("./assets/Graphics/tail_right.png")
+                    elif self.corpo[index-1].direction_prox_ele == "right":
+                        self.corpo[index].troca_img_element("./assets/Graphics/tail_left.png")
+                    elif self.corpo[index-1].direction_prox_ele == "up":
+                        self.corpo[index].troca_img_element("./assets/Graphics/tail_down.png")
+                    else:
+                        self.corpo[index].troca_img_element("./assets/Graphics/tail_up.png")
+                #troca do body
+                else:
+                    # troca do body nas viradas da snake
+                    if self.corpo[index].direction_prox_ele != self.corpo[index-1].direction_prox_ele:
+                        pass
+                    # troca no body reto   
+                    elif self.corpo[index].direction_prox_ele == "left" or self.corpo[index].direction_prox_ele == "right":
+                        self.corpo[index].troca_img_element("./assets/Graphics/body_horizontal.png")
+                    else:
+                        self.corpo[index].troca_img_element("./assets/Graphics/body_vertical.png")
+
                 self.corpo[index].direction_prox_ele = self.corpo[index-1].direction_prox_ele
+                
+
 
     def move_body(self):
         for index in range(1, len(self.corpo)):
@@ -63,6 +86,7 @@ class Snake:
                 else:
                     self.corpo[index].i = len(self.matriz_posicoes)-1
                 self.corpo[index].update_pos(self.matriz_posicoes)
+                
             elif self.corpo[index].direction_prox_ele == "down":
                 if self.corpo[index].i + 1 <= len(self.matriz_posicoes)-1:
                     self.corpo[index].i += 1

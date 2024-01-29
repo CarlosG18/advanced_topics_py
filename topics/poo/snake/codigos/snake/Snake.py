@@ -161,4 +161,9 @@ class Snake:
     def print_pos_head(self):
         print(f'x = {self.head.i}, y = {self.head.j}')
 
+    def check_eat(self,apple):
+        if self.head.i == apple.i and self.head.j == apple.j:
+            cauda = self.corpo[self.tamanho-1]
+            self.corpo.append(Body(cauda.x,cauda.y,cauda.i+1,cauda.j,cauda.direction_prox_ele))
+
     

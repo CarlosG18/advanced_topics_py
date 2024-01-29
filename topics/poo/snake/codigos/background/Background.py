@@ -4,7 +4,7 @@ class Background:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.vetor_elemet = []
+        self.matriz_elemet = []
         self.create()
 
     def create(self):
@@ -25,14 +25,14 @@ class Background:
                     linha_matriz.append(elemento)
                     #print(f'i={i}, j={j}')
 
-            self.vetor_elemet.append(linha_matriz)
+            self.matriz_elemet.append(linha_matriz)
 
     def show(self, screen):
-        for element_linha in self.vetor_elemet:
+        for element_linha in self.matriz_elemet:
             for element_coluna in element_linha:
                 element_coluna.show(screen)
 
     def print_element(self):
-        for i in self.vetor_elemet:
+        for i in self.matriz_elemet:
             print(i)
             print('\n')

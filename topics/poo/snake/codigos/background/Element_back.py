@@ -16,3 +16,5 @@ class Element_Back:
 
     def __str__(self):
         return f'elemento[{self.i}][{self.j}]. x={self.x}, y={self.y}'
+
+    

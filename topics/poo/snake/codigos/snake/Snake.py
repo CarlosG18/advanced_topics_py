@@ -1,5 +1,4 @@
 from .Element import Head, Body, Tail
-import pygame
 
 class Snake:
     def __init__(self, tamanho, velo, vetor_posicoes):
@@ -54,6 +53,7 @@ class Snake:
                 #troca do body
                 else:
                     # troca do body nas viradas da snake
+                    
                     if self.corpo[index].direction_prox_ele != self.corpo[index-1].direction_prox_ele:
                         pass
                     # troca no body reto   
@@ -94,6 +94,26 @@ class Snake:
                     self.corpo[index].i = 0
                 self.corpo[index].update_pos(self.matriz_posicoes)
         self.update_direction()
+        self.last_pos = self.set_last_pos()
+        print(self.last_pos, "\n")
+
+
+    def set_last_pos(self):
+        last_elemento = self.corpo[self.tamanho]
+        print(f'last_corpo = {last_elemento}')
+        #direita
+        if last_elemento.direction_prox_ele == "left":
+            return Body(last_elemento.x+50,last_elemento.y,last_elemento.i,last_elemento.j+1,last_elemento.direction_prox_ele)
+        #esquerda
+        elif last_elemento.direction_prox_ele == "right":
+            return Body(last_elemento.x-50,last_elemento.y,last_elemento.i,last_elemento.j-1,last_elemento.direction_prox_ele)
+        #baixo
+        elif last_elemento.direction_prox_ele == "up":
+            return Body(last_elemento.x,last_elemento.y+50,last_elemento.i+1,last_elemento.j,last_elemento.direction_prox_ele)
+        #cima
+        elif last_elemento.direction_prox_ele == "down":
+            return Body(last_elemento.x,last_elemento.y-50,last_elemento.i-1,last_elemento.j,last_elemento.direction_prox_ele)
+
 
     def move(self):
         #j == movimento de colunas
@@ -157,13 +177,14 @@ class Snake:
     def print_snake(self):
         for elemento_snake in self.corpo:
             print(elemento_snake)
+        print("\n")
 
     def print_pos_head(self):
         print(f'x = {self.head.i}, y = {self.head.j}')
 
     def check_eat(self,apple):
         if self.head.i == apple.i and self.head.j == apple.j:
-            cauda = self.corpo[self.tamanho-1]
-            self.corpo.append(Body(cauda.x,cauda.y,cauda.i+1,cauda.j,cauda.direction_prox_ele))
+            self.corpo.append(Body(self.last_pos.x,self.last_pos.y,self.last_pos.i,self.last_pos.j,self.last_pos.direction_prox_ele))
+            self.tamanho += 1
 
     

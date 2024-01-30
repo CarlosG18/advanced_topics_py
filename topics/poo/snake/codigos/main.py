@@ -19,7 +19,7 @@ background = Background(1280,720)
 apple = Food("./assets/Graphics/apple.png",background.matriz_elemet[5][5].x,background.matriz_elemet[5][5].y,5,5)
 
 #criando a cobrinha
-snake = Snake(1,10,background.matriz_elemet)
+snake = Snake(2,10,background.matriz_elemet)
 
 while running:
     # poll for events
@@ -31,7 +31,7 @@ while running:
     background.show(screen)
 
     if pygame.mouse.get_pressed()[0]:
-        background.print_element()
+        #background.print_element()
         snake.print_snake()
 
     if pygame.key.get_pressed()[pygame.K_DOWN]:
@@ -39,6 +39,7 @@ while running:
         snake.move()
         snake.check_eat(apple)
         pygame.time.wait(100)
+        #print(snake.last_pos)
     elif pygame.key.get_pressed()[pygame.K_UP]:
         snake.move_top()
         snake.move()

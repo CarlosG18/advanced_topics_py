@@ -1,4 +1,5 @@
 from .Element import Head, Body, Tail
+import pygame
 
 class Snake:
     def __init__(self, tamanho, velo, vetor_posicoes):
@@ -53,7 +54,6 @@ class Snake:
                 #troca do body
                 else:
                     # troca do body nas viradas da snake
-                    
                     if self.corpo[index].direction_prox_ele != self.corpo[index-1].direction_prox_ele:
                         pass
                     # troca no body reto   
@@ -94,7 +94,6 @@ class Snake:
                 elif elemento_atual.direction_prox_ele == "down":
                     self.corpo[index].troca_img_element("./assets/Graphics/body_topright.png")
             
-                
 
     def move_body(self):
         for index in range(1, len(self.corpo)):
@@ -152,6 +151,7 @@ class Snake:
     def move(self):
         #j == movimento de colunas
         #i == movimento de linhas
+        #pygame.time.wait(5*self.velo)
 
         if self.direcao == "left":
             self.head.direction_prox_ele = "left"
@@ -224,4 +224,6 @@ class Snake:
         else:
             return False
 
-    
+    def deset_velo(self):
+        if self.velo - 1 > 0:
+            self.velo -= 1

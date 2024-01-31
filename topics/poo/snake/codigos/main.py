@@ -13,7 +13,8 @@ screen = pygame.display.set_mode((1280,tam_tela))
 clock = pygame.time.Clock()
 running = True
 
-game = Game(1280,tam_tela,2,10)
+game = Game(1280,tam_tela)
+cont = 0
 
 #criando o backgroud
 #background = Background(1280,720)
@@ -38,27 +39,28 @@ while running:
         pass
 
     if pygame.key.get_pressed()[pygame.K_DOWN]:
-        game.snake.move_down()
-        game.snake.move()
-        game.check_eat()
+        #game.snake.move_down()      
+        game.add_buffer_directions("down")
+        #game.snake.move()
         #game.snake.check_eat(game.apple)
         pygame.time.wait(100)
     elif pygame.key.get_pressed()[pygame.K_UP]:
-        game.snake.move_top()
-        game.snake.move()
-        game.check_eat()
+        #game.snake.move_top()
+        game.add_buffer_directions("up")
+        #game.snake.move()
         #game.snake.check_eat(game.apple)
         pygame.time.wait(100)
     elif pygame.key.get_pressed()[pygame.K_LEFT]:
-        game.snake.move_left()
-        game.snake.move()
-        game.check_eat()
+        #game.snake.move_left()
+        game.add_buffer_directions("left")
+        #game.snake.move()
         #game.snake.check_eat(game.apple)
         pygame.time.wait(100)
     elif pygame.key.get_pressed()[pygame.K_RIGHT]:
-        game.snake.move_right()
-        game.snake.move()
-        game.check_eat()
+        #game.snake.move_right()
+        game.add_buffer_directions("right")
+        #game.snake.move()
+        
         #game.snake.check_eat(game.apple)
         pygame.time.wait(100)
     
@@ -66,7 +68,12 @@ while running:
     # RENDER YOUR GAME HERE
     game.show_snake(screen)
     game.show_apple(screen)
-    
+    cont += 1
+    if cont == game.snake.velo:
+        game.move_snake()
+        cont = 0
+    game.check_eat()
+
     # flip() the display to put your work on screen
     pygame.display.flip()
     clock.tick(60)  # limits FPS to 60

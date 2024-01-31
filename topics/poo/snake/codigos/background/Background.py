@@ -24,7 +24,7 @@ class Background:
                     #print(f'i={i}, j={j}')
 
             self.matriz_elemet.append(linha_matriz)
-        print(self.print_element())
+        #print(self.print_element())
 
     def show(self, screen):
         for element_linha in self.matriz_elemet:

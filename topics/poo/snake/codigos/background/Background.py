@@ -5,27 +5,26 @@ class Background:
         self.width = width
         self.height = height
         self.matriz_elemet = []
+        self.colunas = int(self.width/50)
+        self.linhas = int(self.height/50)
         self.create()
 
     def create(self):
-        num_colunas = int(self.width/50)
-        num_linhas = int(self.height/50)
-
         #print(f'numero de linhas = {num_linhas}, numero de colunas = {num_colunas}')
-
-        for i in range(num_linhas):
+        for i in range(self.linhas):
             linha_matriz = []
-            for j in range(num_colunas):
+            for j in range(self.colunas):
                 if (j+i) % 2 == 0:
-                    elemento = Element_Back(i,j,i*50,j*50,(0,255,0))
+                    elemento = Element_Back(i,j,j*50,i*50,(0,255,0))
                     linha_matriz.append(elemento)
                     #print(f'i={i}, j={j}')
                 else:
-                    elemento = Element_Back(i,j,i*50,j*50,(0,150,0))
+                    elemento = Element_Back(i,j,j*50,i*50,(0,150,0))
                     linha_matriz.append(elemento)
                     #print(f'i={i}, j={j}')
 
             self.matriz_elemet.append(linha_matriz)
+        print(self.print_element())
 
     def show(self, screen):
         for element_linha in self.matriz_elemet:
@@ -34,5 +33,5 @@ class Background:
 
     def print_element(self):
         for i in self.matriz_elemet:
-            print(i)
-            print('\n')
+            for elemento in i:
+                print(elemento)

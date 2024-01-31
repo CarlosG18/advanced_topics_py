@@ -8,17 +8,17 @@ class Snake:
         self.head = None
         self.corpo = []
         self.last_pos = None
-        self.matriz_posicoes = self.get_vetor_posicoes(vetor_posicoes)
+        self.matriz_posicoes = self.get_matriz_posicoes(vetor_posicoes)
         self.create_snake()
 
-    def get_vetor_posicoes(self, vetor_elemet):
+    def get_matriz_posicoes(self, vetor_elemet):
         matriz = []
         for elemento_linha in vetor_elemet:
             linha_matriz = []
             for elemento_coluna in elemento_linha:
                 posicao = {
-                    "x": elemento_coluna.y,
-                    "y": elemento_coluna.x,
+                    "x": elemento_coluna.x,
+                    "y": elemento_coluna.y,
                 }
                 linha_matriz.append(posicao)
             matriz.append(linha_matriz)
@@ -65,22 +65,55 @@ class Snake:
                 self.corpo[index].direction_prox_ele = self.corpo[index-1].direction_prox_ele
                 
 
+    def check_curva(self, index):
+        elemento_anterior = self.corpo[index-1]
+        elemento_atual = self.corpo[index]
+
+        if elemento_anterior.direction_prox_ele != elemento_atual.direction_prox_ele:
+            if elemento_anterior.direction_prox_ele == "down":
+                if elemento_atual.direction_prox_ele == "left":
+                    self.corpo[index].troca_img_element("./assets/Graphics/body_bottomright.png")
+                elif elemento_atual.direction_prox_ele == "right":
+                    self.corpo[index].troca_img_element("./assets/Graphics/body_bottomleft.png")
+
+            elif elemento_anterior.direction_prox_ele == "up":
+                if elemento_atual.direction_prox_ele == "left":
+                    self.corpo[index].troca_img_element("./assets/Graphics/body_topright.png")
+                elif elemento_atual.direction_prox_ele == "right":
+                    self.corpo[index].troca_img_element("./assets/Graphics/body_topleft.png")
+
+            elif elemento_anterior.direction_prox_ele == "left":
+                if elemento_atual.direction_prox_ele == "up":
+                    self.corpo[index].troca_img_element("./assets/Graphics/body_bottomleft.png")
+                elif elemento_atual.direction_prox_ele == "down":
+                    self.corpo[index].troca_img_element("./assets/Graphics/body_topleft.png")
+
+            elif elemento_anterior.direction_prox_ele == "right":
+                if elemento_atual.direction_prox_ele == "up":
+                    self.corpo[index].troca_img_element("./assets/Graphics/body_bottomright.png")
+                elif elemento_atual.direction_prox_ele == "down":
+                    self.corpo[index].troca_img_element("./assets/Graphics/body_topright.png")
+            
+                
 
     def move_body(self):
         for index in range(1, len(self.corpo)):
             if self.corpo[index].direction_prox_ele == "left":
+                self.check_curva(index)
                 if self.corpo[index].j - 1 >= 0:
                     self.corpo[index].j -= 1
                 else:
                     self.corpo[index].j = len(self.matriz_posicoes[0])-1
                 self.corpo[index].update_pos(self.matriz_posicoes)
             elif self.corpo[index].direction_prox_ele == "right":
+                self.check_curva(index)
                 if self.corpo[index].j + 1 <= len(self.matriz_posicoes[0])-1:
                     self.corpo[index].j += 1
                 else:
                     self.corpo[index].j = 0
                 self.corpo[index].update_pos(self.matriz_posicoes)
             elif self.corpo[index].direction_prox_ele == "up":
+                self.check_curva(index)
                 if self.corpo[index].i - 1 >= 0:
                     self.corpo[index].i -= 1
                 else:
@@ -88,6 +121,7 @@ class Snake:
                 self.corpo[index].update_pos(self.matriz_posicoes)
                 
             elif self.corpo[index].direction_prox_ele == "down":
+                self.check_curva(index)
                 if self.corpo[index].i + 1 <= len(self.matriz_posicoes)-1:
                     self.corpo[index].i += 1
                 else:
@@ -95,12 +129,12 @@ class Snake:
                 self.corpo[index].update_pos(self.matriz_posicoes)
         self.update_direction()
         self.last_pos = self.set_last_pos()
-        print(self.last_pos, "\n")
+        #print(self.last_pos, "\n")
 
 
     def set_last_pos(self):
         last_elemento = self.corpo[self.tamanho]
-        print(f'last_corpo = {last_elemento}')
+        #print(f'last_corpo = {last_elemento}')
         #direita
         if last_elemento.direction_prox_ele == "left":
             return Body(last_elemento.x+50,last_elemento.y,last_elemento.i,last_elemento.j+1,last_elemento.direction_prox_ele)
@@ -186,5 +220,8 @@ class Snake:
         if self.head.i == apple.i and self.head.j == apple.j:
             self.corpo.append(Body(self.last_pos.x,self.last_pos.y,self.last_pos.i,self.last_pos.j,self.last_pos.direction_prox_ele))
             self.tamanho += 1
+            return True
+        else:
+            return False
 
     

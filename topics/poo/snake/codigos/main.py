@@ -2,6 +2,7 @@ import pygame
 from snake.Snake import Snake
 from background.Background import Background
 from food.Food import Food
+from game.Game import Game
 
 # pygame setup
 pygame.init()
@@ -12,14 +13,16 @@ screen = pygame.display.set_mode((1280,tam_tela))
 clock = pygame.time.Clock()
 running = True
 
+game = Game(1280,tam_tela,2,10)
+
 #criando o backgroud
-background = Background(1280,720)
+#background = Background(1280,720)
 
 #criando o alimento
-apple = Food("./assets/Graphics/apple.png",background.matriz_elemet[5][5].x,background.matriz_elemet[5][5].y,5,5)
+#apple = Food("./assets/Graphics/apple.png",background.matriz_elemet[5][5].x,background.matriz_elemet[5][5].y,5,5)
 
 #criando a cobrinha
-snake = Snake(2,10,background.matriz_elemet)
+#snake = Snake(2,10,background.matriz_elemet)
 
 while running:
     # poll for events
@@ -28,40 +31,42 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    background.show(screen)
+    game.show_background(screen)
 
+    
     if pygame.mouse.get_pressed()[0]:
-        #background.print_element()
-        snake.print_snake()
+        pass
 
     if pygame.key.get_pressed()[pygame.K_DOWN]:
-        snake.move_down()
-        snake.move()
-        snake.check_eat(apple)
+        game.snake.move_down()
+        game.snake.move()
+        game.check_eat()
+        #game.snake.check_eat(game.apple)
         pygame.time.wait(100)
-        #print(snake.last_pos)
     elif pygame.key.get_pressed()[pygame.K_UP]:
-        snake.move_top()
-        snake.move()
-        snake.check_eat(apple)
+        game.snake.move_top()
+        game.snake.move()
+        game.check_eat()
+        #game.snake.check_eat(game.apple)
         pygame.time.wait(100)
     elif pygame.key.get_pressed()[pygame.K_LEFT]:
-        snake.move_left()
-        snake.move()
-        snake.check_eat(apple)
+        game.snake.move_left()
+        game.snake.move()
+        game.check_eat()
+        #game.snake.check_eat(game.apple)
         pygame.time.wait(100)
     elif pygame.key.get_pressed()[pygame.K_RIGHT]:
-        snake.move_right()
-        snake.move()
-        snake.check_eat(apple)
+        game.snake.move_right()
+        game.snake.move()
+        game.check_eat()
+        #game.snake.check_eat(game.apple)
         pygame.time.wait(100)
-
+    
         
     # RENDER YOUR GAME HERE
-    snake.show(screen)
-    apple.show(screen)
+    game.show_snake(screen)
+    game.show_apple(screen)
     
-    #snake.move()
     # flip() the display to put your work on screen
     pygame.display.flip()
     clock.tick(60)  # limits FPS to 60

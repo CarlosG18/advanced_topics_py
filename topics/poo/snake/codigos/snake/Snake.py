@@ -224,6 +224,15 @@ class Snake:
         else:
             return False
 
+    def check_eat_boster(self, elemento):
+        if elemento is not None:
+            if self.head.i == elemento.i and self.head.j == elemento.j:
+                return True
+            else:
+                return False
+        else:
+            return False    
+
     def deset_velo(self):
         if self.velo - 1 > 0:
             self.velo -= 1

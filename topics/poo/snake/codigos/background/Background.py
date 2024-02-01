@@ -15,11 +15,11 @@ class Background:
             linha_matriz = []
             for j in range(self.colunas):
                 if (j+i) % 2 == 0:
-                    elemento = Element_Back(i,j,j*50,i*50,(0,255,0))
+                    elemento = Element_Back(i,j,10+(j*50),10+(i*50),(0,255,0))
                     linha_matriz.append(elemento)
                     #print(f'i={i}, j={j}')
                 else:
-                    elemento = Element_Back(i,j,j*50,i*50,(0,150,0))
+                    elemento = Element_Back(i,j,10+(j*50),10+(i*50),(0,150,0))
                     linha_matriz.append(elemento)
                     #print(f'i={i}, j={j}')
 
@@ -35,3 +35,6 @@ class Background:
         for i in self.matriz_elemet:
             for elemento in i:
                 print(elemento)
+
+    def get_xy(self,i, j):
+        return (self.matriz_elemet[i][j].x,self.matriz_elemet[i][j].y)

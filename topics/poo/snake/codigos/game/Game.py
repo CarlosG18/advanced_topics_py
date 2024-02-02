@@ -10,6 +10,7 @@ class Game:
     def __init__(self, screen, fonte):
         self.background = Background(1000,720)
         self.snake = Snake(2,10, self.background.matriz_elemet)
+        self.snake_died = False
         self.apple = self.create_apple()
         self.screen = screen
         self.tela = Tela(screen, fonte)
@@ -21,8 +22,8 @@ class Game:
         self.status_buttons = None
 
     def create_boster(self):
-            i = random.randint(0,self.background.linhas)
-            j = random.randint(0,self.background.colunas)
+            i = random.randint(0,self.background.linhas-1)
+            j = random.randint(0,self.background.colunas-1)
             x, y = self.background.get_xy(i,j)
             self.boster = Bosters("./assets/Graphics/tail_down.png",x,y,i,j,"movimento+")
 
@@ -51,6 +52,9 @@ class Game:
                 self.snake.move_down()
             self.snake.move()
             self.deset_movimentos()
+            self.snake_died = self.snake.check_died()
+            if self.snake.check_died == True:
+                self.tela_morreu()
             
     def show_background(self):
         self.background.show(self.screen)
@@ -113,3 +117,6 @@ class Game:
     
     def init_game(self):
         print("iniciando o jogo")
+
+    def tela_morreu(self):
+        print("morreu!")

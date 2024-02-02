@@ -10,6 +10,7 @@ class Snake:
         self.corpo = []
         self.last_pos = None
         self.matriz_posicoes = self.get_matriz_posicoes(vetor_posicoes)
+        self.died = False
         self.create_snake()
 
     def get_matriz_posicoes(self, vetor_elemet):
@@ -236,3 +237,9 @@ class Snake:
     def deset_velo(self):
         if self.velo - 1 > 0:
             self.velo -= 1
+
+    def check_died(self):
+        for index in range(1,len(self.corpo)):
+            if self.head.i == self.corpo[index].i and self.head.j == self.corpo[index].j:
+                return True
+        return False

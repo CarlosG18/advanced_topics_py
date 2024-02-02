@@ -26,7 +26,7 @@ while running:
     
     
     if pygame.mouse.get_pressed()[0]:
-        game.tela.check_click(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1])
+        game.check_click_button(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1])
 
     if pygame.key.get_pressed()[pygame.K_DOWN]:
         game.move_snake("down")

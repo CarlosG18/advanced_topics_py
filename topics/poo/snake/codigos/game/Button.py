@@ -6,6 +6,7 @@ class Button:
         self.cor2 = cor2
         self.x = x
         self.y = y
+        self.active = False
         self.text = text
         self.width_text = len(self.text)*15
         self.width = 100+self.width_text
@@ -21,13 +22,25 @@ class Button:
 
     def check_click(self, x, y):
         if x >= self.x and x <= self.x+self.width and y <= self.y+self.height and y >= self.y:
+            self.action()
             return True
         else:
             return False
+    
+    def action(self):
+        self.active = True
         
 class ButtonRestart(Button):
     def __init__(self, cor1, cor2, x, y, text, screen, font_file) -> None:
         super().__init__(cor1, cor2, x, y, text, screen, font_file)
+        self.function = "restart"
 
-    def action(self):
-        print("restart jogo")
+class ButtonPause(Button):
+    def __init__(self, cor1, cor2, x, y, text, screen, font_file) -> None:
+        super().__init__(cor1, cor2, x, y, text, screen, font_file)
+        self.function = "pause"
+
+class ButtonInit(Button):
+    def __init__(self, cor1, cor2, x, y, text, screen, font_file) -> None:
+        super().__init__(cor1, cor2, x, y, text, screen, font_file)
+        self.function = "inicializar"

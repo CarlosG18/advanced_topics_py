@@ -4,6 +4,7 @@ from food.Food import Food
 import random
 from game.Tela import Tela
 from game.Bosters import Bosters
+import pygame
 
 class Game:
     def __init__(self, screen, fonte):
@@ -17,6 +18,7 @@ class Game:
         self.vidas = 3
         self.cont_eat = 0
         self.boster = None
+        self.status_buttons = None
 
     def create_boster(self):
             i = random.randint(0,self.background.linhas)
@@ -82,5 +84,32 @@ class Game:
         #print(f'linha = {linha}, coluna = {coluna}')
         return Food("./assets/Graphics/apple.png",self.background.matriz_elemet[linha][coluna].x, self.background.matriz_elemet[linha][coluna].y, linha, coluna)
     
+    def check_click_button(self, x, y):
+        dados = self.tela.check_click(x,y)
+        self.status_buttons = dados
+
+        if self.status_buttons is not None:
+            for btn in self.status_buttons:
+                if btn["function"] == "restart" and btn["status"] == True:
+                    self.reiniciar_game()
+                elif btn["function"] == "pause" and btn["status"] == True:
+                    self.pause_game()
+                elif btn["function"] == "inicializar" and  btn["status"] == True:
+                    self.init_game()
+                    
+
     def reiniciar_game(self):
-        pass
+        self.snake = Snake(2,10, self.background.matriz_elemet)
+        self.apple = self.create_apple()
+        self.nivel = 1
+        self.movimentos = 50
+        self.vidas = 3
+        self.cont_eat = 0
+        self.boster = None
+        self.status_buttons = None
+
+    def pause_game(self):
+        print("pause o jogo!")
+    
+    def init_game(self):
+        print("iniciando o jogo")

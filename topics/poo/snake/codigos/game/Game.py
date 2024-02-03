@@ -2,7 +2,7 @@ from snake.Snake import Snake
 from background.Background import Background
 from food.Food import Food
 import random
-from game.Tela import Tela
+from game.Tela import TelaInfos, TelaGameOver
 from game.Bosters import Bosters
 import pygame
 
@@ -13,13 +13,15 @@ class Game:
         self.snake_died = False
         self.apple = self.create_apple()
         self.screen = screen
-        self.tela = Tela(screen, fonte)
+        self.fonte = fonte
+        self.tela = TelaInfos(screen, fonte)
         self.nivel = 1
         self.movimentos = 50
         self.vidas = 3
         self.cont_eat = 0
         self.boster = None
         self.status_buttons = None
+        self.tela_game_over = TelaGameOver(self.screen,self.fonte)
 
     def create_boster(self):
             i = random.randint(0,self.background.linhas-1)
@@ -53,7 +55,9 @@ class Game:
             self.snake.move()
             self.deset_movimentos()
             self.snake_died = self.snake.check_died()
-            if self.snake.check_died == True:
+            if self.movimentos == 0:
+                self.snake_died = True
+            if self.snake_died:
                 self.tela_morreu()
             
     def show_background(self):
@@ -63,7 +67,8 @@ class Game:
 
     def show_snake(self):
         self.snake.show(self.screen)
-        self.infos_tela()
+        if not self.snake_died:
+            self.infos_tela()
     
     def show_apple(self):
         self.apple.show(self.screen)
@@ -89,7 +94,10 @@ class Game:
         return Food("./assets/Graphics/apple.png",self.background.matriz_elemet[linha][coluna].x, self.background.matriz_elemet[linha][coluna].y, linha, coluna)
     
     def check_click_button(self, x, y):
-        dados = self.tela.check_click(x,y)
+        if self.snake_died:
+            dados = self.tela_game_over.check_click(x,y)
+        else:
+            dados = self.tela.check_click(x,y)
         self.status_buttons = dados
 
         if self.status_buttons is not None:
@@ -103,6 +111,7 @@ class Game:
                     
 
     def reiniciar_game(self):
+        self.snake_died = False
         self.snake = Snake(2,10, self.background.matriz_elemet)
         self.apple = self.create_apple()
         self.nivel = 1
@@ -119,4 +128,5 @@ class Game:
         print("iniciando o jogo")
 
     def tela_morreu(self):
-        print("morreu!")
+        self.tela_game_over.show()
+        self.tela_game_over.write("Game Over!",430,350,"black")

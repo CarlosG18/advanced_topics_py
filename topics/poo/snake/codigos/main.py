@@ -22,33 +22,31 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    game.show_background()
-    
-    
     if pygame.mouse.get_pressed()[0]:
-        game.check_click_button(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1])
+            game.check_click_button(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1])
 
-    if pygame.key.get_pressed()[pygame.K_DOWN]:
-        game.move_snake("down")
-        game.check_eat()
-        pygame.time.wait(150)
-    elif pygame.key.get_pressed()[pygame.K_UP]:
-        game.move_snake("up")
-        game.check_eat()
-        pygame.time.wait(150)
-    elif pygame.key.get_pressed()[pygame.K_LEFT]:
-        game.move_snake("left")
-        game.check_eat()
-        pygame.time.wait(150)
-    elif pygame.key.get_pressed()[pygame.K_RIGHT]:
-        game.move_snake("right")
-        game.check_eat()
-        pygame.time.wait(150)
-        
-    # RENDER YOUR GAME HERE
-    game.show_snake()
-    game.show_apple()
-   
+    if not game.snake_died:
+        game.show_background()
+
+        if pygame.key.get_pressed()[pygame.K_DOWN]:
+            game.move_snake("down")
+            game.check_eat()
+            pygame.time.wait(150)
+        elif pygame.key.get_pressed()[pygame.K_UP]:
+            game.move_snake("up")
+            game.check_eat()
+            pygame.time.wait(150)
+        elif pygame.key.get_pressed()[pygame.K_LEFT]:
+            game.move_snake("left")
+            game.check_eat()
+            pygame.time.wait(150)
+        elif pygame.key.get_pressed()[pygame.K_RIGHT]:
+            game.move_snake("right")
+            game.check_eat()
+            pygame.time.wait(150)
+
+        game.show_snake()
+        game.show_apple()    
 
     # flip() the display to put your work on screen
     pygame.display.flip()

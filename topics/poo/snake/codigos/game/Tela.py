@@ -12,15 +12,6 @@ class Tela:
         self.rect = pygame.Rect(1020,10,self.width, self.heigth)
         self.buttons = []
         self.show()
-        self.create_buttons()
-
-    def create_buttons(self):
-        button_restart = ButtonRestart("black","red",1040,500,"restart", self.screen, "./assets/fonts/Potato_sans-Black.otf")
-        button_pause = ButtonPause("blue", "white",1040,300,"pause",self.screen,"./assets/fonts/Potato_sans-Black.otf")
-        button_init = ButtonInit("green", "white",1040,400,"iniciar",self.screen,"./assets/fonts/Potato_sans-Black.otf")
-        self.buttons.append(button_pause)
-        self.buttons.append(button_restart)
-        self.buttons.append(button_init)
 
     def show(self):
         pygame.draw.rect(self.screen,self.color,self.rect)
@@ -42,7 +33,29 @@ class Tela:
                                 "status": button.active,
                         })
         return dados 
-            
+
+class TelaInfos(Tela):
+    def __init__(self, screen, fonte) -> None:
+        super().__init__(screen, fonte)
+        self.create_buttons()
+
+    def create_buttons(self):
+        button_restart = ButtonRestart("black","red",1040,500,"restart", self.screen, "./assets/fonts/Potato_sans-Black.otf")
+        self.buttons.append(button_restart)
+        
+
+class TelaGameOver(Tela):
+    def __init__(self, screen, fonte) -> None:
+        super().__init__(screen, fonte)  
+        self.width = 1260
+        self.heigth = 700
+        self.color = (255,0,0)
+        self.rect = pygame.Rect(10,10,self.width, self.heigth)
+        self.create_buttons()
+
+    def create_buttons(self):
+        button_restart = ButtonRestart("blue","white",530,350,"restart", self.screen, "./assets/fonts/Potato_sans-Black.otf")
+        self.buttons.append(button_restart) 
 
     
 

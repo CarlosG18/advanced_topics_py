@@ -1,5 +1,6 @@
 from .Element import Head, Body, Tail
 import pygame
+import random
 
 class Snake:
     def __init__(self, tamanho, velo, vetor_posicoes):
@@ -28,12 +29,18 @@ class Snake:
             
 
     def create_snake(self):
-        self.head = Head(self.matriz_posicoes[0][0]["x"],self.matriz_posicoes[0][0]["y"], 0, 0, None)
+        index_i = random.randint(0, len(self.matriz_posicoes)-1)
+        index_j = random.randint(0,len(self.matriz_posicoes[0])-1)
+        while index_j + self.tamanho > len(self.matriz_posicoes[0]):
+            index_j = random.randint(0,len(self.matriz_posicoes[0])-1)
+        #print(f'total de linhas = {len(self.matriz_posicoes)}, total de colunas {len(self.matriz_posicoes[0])}')
+
+        self.head = Head(self.matriz_posicoes[index_i][index_j]["x"],self.matriz_posicoes[index_i][index_j]["y"], index_i, index_j, None)
         self.corpo.append(self.head)
         for j in range(1, self.tamanho):
-            body = Body(self.matriz_posicoes[0][j]["x"],self.matriz_posicoes[0][j]["y"], 0, j, "left")
+            body = Body(self.matriz_posicoes[index_i][index_j+j]["x"],self.matriz_posicoes[index_i][index_j+j]["y"], index_i, index_j+j, "left")
             self.corpo.append(body)
-        rabo = Tail(self.matriz_posicoes[0][self.tamanho]["x"],self.matriz_posicoes[0][self.tamanho]["y"], 0, self.tamanho, "left")
+        rabo = Tail(self.matriz_posicoes[index_i][self.tamanho+index_j]["x"],self.matriz_posicoes[index_i][self.tamanho+index_j]["y"], index_i, self.tamanho+index_j, "left")
         self.corpo.append(rabo)
 
     def update_corpo(self):
@@ -243,3 +250,30 @@ class Snake:
             if self.head.i == self.corpo[index].i and self.head.j == self.corpo[index].j:
                 return True
         return False
+
+class BadSnake(Snake):
+    def __init__(self, tamanho, velo, vetor_posicoes):
+        super().__init__(tamanho, velo, vetor_posicoes)
+        self.movimentos = 5
+
+    def move_auto(self):
+        if self.movimentos == 5:
+            direcoes = ['up','down','left','right']
+            direcao = random.choices(direcoes)
+            self.direcao = direcao[0]
+
+        if self.movimentos-1 >= 0:
+            self.movimentos -= 1
+        else:
+            self.movimentos = 5
+
+        if self.direcao == 'left':
+            self.move_left()
+        elif self.direcao == 'right':
+            self.move_right()
+        elif self.direcao == 'up':
+            self.move_top()
+        elif self.direcao == 'down':
+            self.move_down()
+        self.move()
+        

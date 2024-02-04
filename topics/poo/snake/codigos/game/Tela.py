@@ -3,9 +3,9 @@ import pygame
 from game.Button import ButtonRestart,ButtonPause, ButtonInit
 
 class Tela:
-    def __init__(self, screen, fonte) -> None:
+    def __init__(self, screen, tam_fonte) -> None:
         self.screen = screen
-        self.fonte = fonte
+        self.fonte = pygame.font.Font("./assets/fonts/Browood-Regular.ttf", tam_fonte)  
         self.width = 250
         self.heigth = 700
         self.color = (200,200,200)
@@ -45,8 +45,8 @@ class TelaInfos(Tela):
         
 
 class TelaGameOver(Tela):
-    def __init__(self, screen, fonte) -> None:
-        super().__init__(screen, fonte)  
+    def __init__(self, screen, tam_fonte) -> None:
+        super().__init__(screen, tam_fonte)
         self.width = 1260
         self.heigth = 700
         self.color = (255,0,0)

@@ -1,4 +1,4 @@
-from snake.Snake import Snake
+from snake.Snake import Snake, BadSnake
 from background.Background import Background
 from food.Food import Food
 import random
@@ -7,21 +7,21 @@ from game.Bosters import Bosters
 import pygame
 
 class Game:
-    def __init__(self, screen, fonte):
+    def __init__(self, screen):
         self.background = Background(1000,720)
         self.snake = Snake(2,10, self.background.matriz_elemet)
         self.snake_died = False
         self.apple = self.create_apple()
         self.screen = screen
-        self.fonte = fonte
-        self.tela = TelaInfos(screen, fonte)
+        self.tela = TelaInfos(screen,20)
         self.nivel = 1
         self.movimentos = 50
         self.vidas = 3
         self.cont_eat = 0
         self.boster = None
         self.status_buttons = None
-        self.tela_game_over = TelaGameOver(self.screen,self.fonte)
+        self.tela_game_over = TelaGameOver(self.screen,70)
+        self.badsnake = BadSnake(2,10,self.background.matriz_elemet)
 
     def create_boster(self):
             i = random.randint(0,self.background.linhas-1)
@@ -34,10 +34,10 @@ class Game:
 
     def infos_tela(self):
         self.tela.show()
-        self.tela.write(f"nivel = {self.nivel}",1050,20, (0,0,0))
-        self.tela.write(f"vidas = {self.vidas}",1050,40, (0,0,0))
-        self.tela.write(f"movimentos = {self.movimentos}",1050,60, (0,0,0))
-        self.tela.write(f"tamanho = {self.snake.tamanho}",1050,80, (0,0,0))
+        self.tela.write(f"NIVEL = {self.nivel}",1050,20, (0,0,0))
+        self.tela.write(f"VIDAS = {self.vidas}",1050,40, (0,0,0))
+        self.tela.write(f"MOVIMENTOS = {self.movimentos}",1050,60, (0,0,0))
+        self.tela.write(f"TAMANHO = {self.snake.tamanho}",1050,80, (0,0,0))
 
     def deset_movimentos(self):
         self.movimentos -= 1
@@ -59,6 +59,7 @@ class Game:
                 self.snake_died = True
             if self.snake_died:
                 self.tela_morreu()
+        self.badsnake.move_auto()
             
     def show_background(self):
         self.background.show(self.screen)
@@ -66,18 +67,20 @@ class Game:
             self.show_boster()
 
     def show_snake(self):
-        self.snake.show(self.screen)
         if not self.snake_died:
             self.infos_tela()
+            self.snake.show(self.screen)
+            self.badsnake.show(self.screen)
     
     def show_apple(self):
-        self.apple.show(self.screen)
+        if not self.snake_died:
+            self.apple.show(self.screen)
 
     def check_eat(self):
         comeu = self.snake.check_eat(self.apple)
         comeu_boster = self.snake.check_eat_boster(self.boster)
         if comeu_boster:
-            self.movimentos += 50
+            self.movimentos += 25
             self.boster = None
         #print(f'comeu = {comeu}')
         if comeu:
@@ -129,4 +132,4 @@ class Game:
 
     def tela_morreu(self):
         self.tela_game_over.show()
-        self.tela_game_over.write("Game Over!",430,350,"black")
+        self.tela_game_over.write("Game Over!",480,250,"black")

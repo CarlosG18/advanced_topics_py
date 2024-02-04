@@ -6,14 +6,13 @@ from game.Game import Game
 
 # pygame setup
 pygame.init()
-fonte = pygame.font.Font(None, 20)
 tam_tela = 720
 screen = pygame.display.set_mode((1280,tam_tela))
 #screen = pygame.display.set_mode((tam_tela,tam_tela))
 clock = pygame.time.Clock()
 running = True
 
-game = Game(screen, fonte)
+game = Game(screen)
 
 while running:
     # poll for events

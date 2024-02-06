@@ -52,6 +52,9 @@ class Game:
 
     def deset_movimentos(self):
         self.movimentos -= 1
+        if self.movimentos == 0:
+            self.vidas -= 1
+            self.movimentos = 50
 
     def move_snake(self, direcao):
         if self.movimentos > 0:
@@ -66,7 +69,7 @@ class Game:
             self.snake.move()
             self.deset_movimentos()
             self.snake_died = self.snake.check_died()
-            if self.movimentos == 0:
+            if self.vidas == 0:
                 self.snake_died = True
             if self.snake_died:
                 self.tela_morreu()

@@ -17,6 +17,7 @@ class Game:
         self.nivel = 1
         self.movimentos = 50
         self.vidas = 3
+        self.deset_vidas = False
         self.cont_eat = 0
         self.boster = None
         self.status_buttons = None
@@ -58,15 +59,32 @@ class Game:
 
     def infos_tela(self):
         self.tela.show()
-        self.tela.write(f"NIVEL = {self.nivel}",1050,20, (0,0,0))
-        self.tela.write(f"VIDAS = {self.vidas}",1050,40, (0,0,0))
-        self.tela.write(f"MOVIMENTOS = {self.movimentos}",1050,60, (0,0,0))
-        self.tela.write(f"TAMANHO = {self.snake.tamanho}",1050,80, (0,0,0))
+        self.tela.set_tam_font(30)
+        self.tela.write(f"NIVEL",1110,20, (255,255,255))
+        self.tela.set_tam_font(100)
+        self.tela.write(f'{self.nivel}',1120,50, (255,255,255))
+        self.tela.set_tam_font(30)
+        self.tela.write(f"VIDAS",1110,190, (255,255,255))
+        if self.vidas == 2 and self.deset_vidas:
+            self.tela.modelife2()
+            self.deset_vidas = False
+        elif self.vidas == 1 and self.deset_vidas:
+            self.tela.modelife1()
+            self.deset_vidas = False
+        self.tela.show_imgs()
+        self.tela.write(f"MOVIMENTOS",1070,330, (255,255,255))
+        self.tela.set_tam_font(100)
+        self.tela.write(f"{self.movimentos}",1100,360, (255,255,255))
+        self.tela.set_tam_font(30)
+        self.tela.write(f"macas restantes",1050,520, (255,255,255))
+        self.tela.set_tam_font(100)
+        self.tela.write(f"{self.snake.tamanho}",1120,550, (255,255,255))
 
     def deset_movimentos(self):
         self.movimentos -= 1
         if self.movimentos == 0:
             self.vidas -= 1
+            self.deset_vidas = True
             self.movimentos = 50
 
     def move_snake(self, direcao):
@@ -156,6 +174,7 @@ class Game:
         self.nivel = 1
         self.movimentos = 50
         self.vidas = 3
+        self.tela.modelife3()
         self.cont_eat = 0
         self.boster = None
         self.status_buttons = None

@@ -56,7 +56,6 @@ pygame.quit()
 #lista de bugs para ajeitar:
 
 #4. ajeitar a cauda da snake quando come uma maça
-#5. fazer a checachem de movimento invalido ex: direcao = left e apertar right e a snake morrer
 
 #10. introduzir tempo
 #11. adicionar efeitos sonoros

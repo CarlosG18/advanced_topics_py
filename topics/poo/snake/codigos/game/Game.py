@@ -4,6 +4,11 @@ from food.Food import Food
 import random
 from game.Tela import TelaInfos, TelaGameOver, TelaInicio
 from game.Bosters import Bosters
+import pygame
+
+def load_music(caminho):
+    pygame.mixer.music.load(caminho)
+    pygame.mixer.music.play()
 
 class Game:
     def __init__(self, screen):
@@ -130,10 +135,14 @@ class Game:
         comeu = self.snake.check_eat(self.apple)
         comeu_boster = self.snake.check_eat_boster(self.boster)
         if comeu_boster:
+            efeitos_sonoros = ["como-e-amigo", "ai-que-delicia-mickey", "ai-pai-para-hihi", "brasil", "gay-echo", "miau"]
+            load_music(f"./assets/musics/{random.choice(efeitos_sonoros)}.mp3")
             self.movimentos += 25
             self.boster = None
         #print(f'comeu = {comeu}')
         if comeu:
+            efeitos_sonoros = ["como-e-amigo", "ai-que-delicia-mickey", "ai-pai-para-hihi", "brasil", "gay-echo", "miau"]
+            load_music(f"./assets/musics/{random.choice(efeitos_sonoros)}.mp3")
             self.apple = self.create_apple()
             self.cont_eat += 1
             if self.cont_eat == 2:
@@ -190,4 +199,6 @@ class Game:
 
     def tela_morreu(self):
         self.tela_game_over.show()
+        efeitos_sonoros = ["tema-triste-toguro", "naruto-sad"]
+        load_music(f"./assets/musics/{random.choice(efeitos_sonoros)}.mp3")
         self.tela_game_over.write("Game Over!",480,250,"black")

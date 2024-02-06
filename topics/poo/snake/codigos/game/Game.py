@@ -28,7 +28,7 @@ class Game:
             i = random.randint(0,self.background.linhas-1)
             j = random.randint(0,self.background.colunas-1)
             x, y = self.background.get_xy(i,j)
-            self.boster = Bosters("./assets/Graphics/tail_down.png",x,y,i,j,"movimento+")
+            self.boster = Bosters("./assets/Graphics/adicionar.png",x,y,i,j,"movimento+")
 
     def show_boster(self):
             self.boster.show(self.screen)

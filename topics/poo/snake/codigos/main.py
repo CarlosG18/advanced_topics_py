@@ -54,13 +54,14 @@ while running:
 pygame.quit()
 
 #lista de bugs para ajeitar:
-#1. fazer uma verificação para que a fruta não caia na posição do corpo da snake
+#1. fazer uma verificação para que a fruta ou o boster não caia na posição do corpo da snake
 #2. ajeitar as telas para nao ficarem com marcas anteriores
 
 #4. ajeitar a cauda da snake quando come uma maça
 #5. fazer a checachem de movimento invalido ex: direcao = left e apertar right e a snake morrer
-#6. adicionar uma imagem para o acrecimo de movimentos
+
 #7. ajeitar a tela de infos
 #8. ajeitar o bug da criação do snake - tail
 
 #10. introduzir tempo
+#11. adicionar efeitos sonoros

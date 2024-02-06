@@ -65,3 +65,4 @@ pygame.quit()
 
 #10. introduzir tempo
 #11. adicionar efeitos sonoros
+#12. adicionar niveis

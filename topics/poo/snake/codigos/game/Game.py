@@ -24,9 +24,22 @@ class Game:
         self.tela_init = TelaInicio(screen,30)
         #self.badsnake = BadSnake(2,10,self.background.matriz_elemet)
 
+    def check_empty_casa(self, i, j):
+        empty = True
+        for body in self.snake.corpo:
+            if body.i == i and body.j == j:
+                empty = False
+                break
+        return empty
+
     def create_boster(self):
             i = random.randint(0,self.background.linhas-1)
             j = random.randint(0,self.background.colunas-1)
+            empty_casa = self.check_empty_casa(i,j)
+            while not empty_casa:
+                i = random.randint(0,self.background.linhas-1)
+                j = random.randint(0,self.background.colunas-1)
+                empty_casa = self.check_empty_casa(i,j)    
             x, y = self.background.get_xy(i,j)
             self.boster = Bosters("./assets/Graphics/adicionar.png",x,y,i,j,"movimento+")
 
@@ -109,7 +122,11 @@ class Game:
     def create_apple(self):
         linha = random.randint(0,self.background.linhas-1)
         coluna = random.randint(0,self.background.colunas-1)
-        #print(f'linha = {linha}, coluna = {coluna}')
+        empty_casa = self.check_empty_casa(linha,coluna)
+        while not empty_casa:
+            linha = random.randint(0,self.background.linhas-1)
+            coluna = random.randint(0,self.background.colunas-1)
+            empty_casa = self.check_empty_casa(linha,coluna)  
         return Food("./assets/Graphics/apple.png",self.background.matriz_elemet[linha][coluna].x, self.background.matriz_elemet[linha][coluna].y, linha, coluna)
     
     def check_click_button(self, x, y):

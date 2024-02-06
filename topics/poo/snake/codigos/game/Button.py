@@ -43,4 +43,4 @@ class ButtonPause(Button):
 class ButtonInit(Button):
     def __init__(self, cor1, cor2, x, y, text, screen, font_file) -> None:
         super().__init__(cor1, cor2, x, y, text, screen, font_file)
-        self.function = "inicializar"
+        self.function = "start"

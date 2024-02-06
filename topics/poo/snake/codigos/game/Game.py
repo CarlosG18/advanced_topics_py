@@ -1,13 +1,13 @@
-from snake.Snake import Snake, BadSnake
+from snake.Snake import Snake, BadSnake, GoodSnake
 from background.Background import Background
 from food.Food import Food
 import random
-from game.Tela import TelaInfos, TelaGameOver
+from game.Tela import TelaInfos, TelaGameOver, TelaInicio
 from game.Bosters import Bosters
-import pygame
 
 class Game:
     def __init__(self, screen):
+        self.start = False
         self.background = Background(1000,720)
         self.snake = Snake(2,10, self.background.matriz_elemet)
         self.snake_died = False
@@ -21,7 +21,8 @@ class Game:
         self.boster = None
         self.status_buttons = None
         self.tela_game_over = TelaGameOver(self.screen,70)
-        self.badsnake = BadSnake(2,10,self.background.matriz_elemet)
+        self.tela_init = TelaInicio(screen,30)
+        #self.badsnake = BadSnake(2,10,self.background.matriz_elemet)
 
     def create_boster(self):
             i = random.randint(0,self.background.linhas-1)
@@ -31,6 +32,16 @@ class Game:
 
     def show_boster(self):
             self.boster.show(self.screen)
+
+    def tela_inicio(self):
+        self.tela_init.show()
+        self.tela_init.set_tam_font(120)
+        self.tela_init.write("SNAKEBRAIN", 350, 150,(0,0,255))
+        self.tela_init.set_tam_font(20)
+        self.tela_init.write("como jogar: ",135, 450,(255,0,0))
+        self.tela_init.write("voce tem inicialmente 50 movimentos para usar, um boster de mais 25 jogadas sera dropado em um lugar aleatorio",250, 450,(0,0,0))
+        self.tela_init.write("a cada 2 macas capturadas. cada nivel voce tera que capturar um numero definido de macas para passar de fase. voce ",250, 475,(0,0,0))
+        self.tela_init.write("tera 3 vidas em cada nivel e se seus movimentos chegarem a 0 voce perdera uma vida. o jogo possui 10 fases.",250, 500,(0,0,0))
 
     def infos_tela(self):
         self.tela.show()
@@ -59,21 +70,23 @@ class Game:
                 self.snake_died = True
             if self.snake_died:
                 self.tela_morreu()
-        self.badsnake.move_auto()
+        #self.badsnake.move_auto()
             
     def show_background(self):
         self.background.show(self.screen)
+        if not self.start:
+            self.tela_inicio()
         if self.boster:
             self.show_boster()
 
     def show_snake(self):
-        if not self.snake_died:
+        if not self.snake_died and self.start:
             self.infos_tela()
             self.snake.show(self.screen)
-            self.badsnake.show(self.screen)
+            #self.badsnake.show(self.screen)
     
     def show_apple(self):
-        if not self.snake_died:
+        if not self.snake_died and self.start:
             self.apple.show(self.screen)
 
     def check_eat(self):
@@ -97,10 +110,13 @@ class Game:
         return Food("./assets/Graphics/apple.png",self.background.matriz_elemet[linha][coluna].x, self.background.matriz_elemet[linha][coluna].y, linha, coluna)
     
     def check_click_button(self, x, y):
-        if self.snake_died:
-            dados = self.tela_game_over.check_click(x,y)
+        if not self.start:
+            dados = self.tela_init.check_click(x,y)
         else:
-            dados = self.tela.check_click(x,y)
+            if self.snake_died:
+                dados = self.tela_game_over.check_click(x,y)
+            else:
+                dados = self.tela.check_click(x,y)
         self.status_buttons = dados
 
         if self.status_buttons is not None:
@@ -109,7 +125,7 @@ class Game:
                     self.reiniciar_game()
                 elif btn["function"] == "pause" and btn["status"] == True:
                     self.pause_game()
-                elif btn["function"] == "inicializar" and  btn["status"] == True:
+                elif btn["function"] == "start" and  btn["status"] == True:
                     self.init_game()
                     
 
@@ -128,7 +144,7 @@ class Game:
         print("pause o jogo!")
     
     def init_game(self):
-        print("iniciando o jogo")
+        self.start = True
 
     def tela_morreu(self):
         self.tela_game_over.show()

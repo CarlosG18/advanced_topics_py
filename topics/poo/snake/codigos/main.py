@@ -52,3 +52,14 @@ while running:
     clock.tick(60)  # limits FPS to 60
 
 pygame.quit()
+
+#lista de bugs para ajeitar:
+#1. fazer uma verificação para que a fruta não caia na posição do corpo da snake
+#2. ajeitar as telas para nao ficarem com marcas anteriores
+#3. criar uma tela de inicio, com as instruçoes do jogo e um botao de iniciar
+#4. ajeitar a cauda da snake quando come uma maça
+#5. fazer a checachem de movimento invalido ex: direcao = left e apertar right e a snake morrer
+#6. adicionar uma imagem para o acrecimo de movimentos
+#7. ajeitar a tela de infos
+#8. ajeitar o bug da criação do snake - tail
+#9. implementar a retirada de vida

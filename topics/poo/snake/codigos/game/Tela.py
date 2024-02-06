@@ -13,6 +13,9 @@ class Tela:
         self.buttons = []
         self.show()
 
+    def set_tam_font(self, tam_fonte):
+        self.fonte = pygame.font.Font("./assets/fonts/Browood-Regular.ttf", tam_fonte) 
+
     def show(self):
         pygame.draw.rect(self.screen,self.color,self.rect)
         for button in self.buttons:
@@ -56,6 +59,19 @@ class TelaGameOver(Tela):
     def create_buttons(self):
         button_restart = ButtonRestart("blue","white",530,350,"restart", self.screen, "./assets/fonts/Potato_sans-Black.otf")
         self.buttons.append(button_restart) 
+
+class TelaInicio(Tela):
+    def __init__(self, screen, tam_fonte) -> None:
+        super().__init__(screen, tam_fonte)
+        self.width = 1260
+        self.heigth = 700
+        self.color = (0,255,0)
+        self.rect = pygame.Rect(10,10,self.width, self.heigth)
+        self.create_buttons()
+
+    def create_buttons(self):
+        button_init = ButtonInit("blue","white",530,350,"start", self.screen, "./assets/fonts/Potato_sans-Black.otf")
+        self.buttons.append(button_init) 
 
     
 

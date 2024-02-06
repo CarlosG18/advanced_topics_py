@@ -200,6 +200,29 @@ class Snake:
         for element in self.corpo:
             element.show(screen)
 
+    def check_eat(self,apple):
+        if self.head.i == apple.i and self.head.j == apple.j:
+            self.corpo.append(Body(self.last_pos.x,self.last_pos.y,self.last_pos.i,self.last_pos.j,self.last_pos.direction_prox_ele))
+            self.tamanho += 1
+            return True
+        else:
+            return False
+
+    def check_died(self):
+        for index in range(1,len(self.corpo)):
+            if self.head.i == self.corpo[index].i and self.head.j == self.corpo[index].j:
+                return True
+        return False
+    
+    def check_eat_boster(self, elemento):
+        if elemento is not None:
+            if self.head.i == elemento.i and self.head.j == elemento.j:
+                return True
+            else:
+                return False
+        else:
+            return False  
+
     def move_top(self):
         self.direcao = "up"
         self.corpo[0].troca_img_element("./assets/Graphics/head_up.png")
@@ -224,32 +247,11 @@ class Snake:
     def print_pos_head(self):
         print(f'x = {self.head.i}, y = {self.head.j}')
 
-    def check_eat(self,apple):
-        if self.head.i == apple.i and self.head.j == apple.j:
-            self.corpo.append(Body(self.last_pos.x,self.last_pos.y,self.last_pos.i,self.last_pos.j,self.last_pos.direction_prox_ele))
-            self.tamanho += 1
-            return True
-        else:
-            return False
-
-    def check_eat_boster(self, elemento):
-        if elemento is not None:
-            if self.head.i == elemento.i and self.head.j == elemento.j:
-                return True
-            else:
-                return False
-        else:
-            return False    
-
     def deset_velo(self):
         if self.velo - 1 > 0:
             self.velo -= 1
 
-    def check_died(self):
-        for index in range(1,len(self.corpo)):
-            if self.head.i == self.corpo[index].i and self.head.j == self.corpo[index].j:
-                return True
-        return False
+    
 
 class BadSnake(Snake):
     def __init__(self, tamanho, velo, vetor_posicoes):
@@ -276,4 +278,10 @@ class BadSnake(Snake):
         elif self.direcao == 'down':
             self.move_down()
         self.move()
+
+class GoodSnake(Snake):
+    def __init__(self, tamanho, velo, vetor_posicoes):
+        super().__init__(tamanho, velo, vetor_posicoes)
+
+     
         

@@ -97,16 +97,19 @@ class Game:
                 self.snake.move_top()
             elif direcao == "down":
                 self.snake.move_down()
-            self.snake.move()
-            self.deset_movimentos()
-            self.snake_died = self.snake.check_died()
-            if self.vidas == 0:
-                self.snake_died = True
-            if self.snake_died:
-                self.tela_morreu()
+            
+            if self.snake.flag_move:
+                self.snake.move()
+                self.deset_movimentos()
+                self.snake_died = self.snake.check_died()
+                if self.vidas == 0:
+                    self.snake_died = True
+                if self.snake_died:
+                    self.tela_morreu()
         #self.badsnake.move_auto()
             
     def show_background(self):
+        self.screen.fill("black")
         self.background.show(self.screen)
         if not self.start:
             self.tela_inicio()

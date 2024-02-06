@@ -6,12 +6,13 @@ class Snake:
     def __init__(self, tamanho, velo, vetor_posicoes):
         self.tamanho = tamanho
         self.velo = velo
-        self.direcao = None
+        self.direcao = "left"
         self.head = None
         self.corpo = []
         self.last_pos = None
         self.matriz_posicoes = self.get_matriz_posicoes(vetor_posicoes)
         self.died = False
+        self.flag_move = False
         self.create_snake()
 
     def get_matriz_posicoes(self, vetor_elemet):
@@ -31,10 +32,9 @@ class Snake:
     def create_snake(self):
         index_i = random.randint(0, len(self.matriz_posicoes)-1)
         index_j = random.randint(0,len(self.matriz_posicoes[0])-1)
-        while index_j + self.tamanho > len(self.matriz_posicoes[0]):
+        while index_j + self.tamanho >= len(self.matriz_posicoes[0]):
             index_j = random.randint(0,len(self.matriz_posicoes[0])-1)
-        #print(f'total de linhas = {len(self.matriz_posicoes)}, total de colunas {len(self.matriz_posicoes[0])}')
-
+        
         self.head = Head(self.matriz_posicoes[index_i][index_j]["x"],self.matriz_posicoes[index_i][index_j]["y"], index_i, index_j, None)
         self.corpo.append(self.head)
         for j in range(1, self.tamanho):
@@ -224,20 +224,36 @@ class Snake:
             return False  
 
     def move_top(self):
-        self.direcao = "up"
-        self.corpo[0].troca_img_element("./assets/Graphics/head_up.png")
+        if self.direcao != "down":
+            self.direcao = "up"
+            self.corpo[0].troca_img_element("./assets/Graphics/head_up.png")
+            self.flag_move = True
+        else:
+            self.flag_move = False
     
     def move_left(self):
-        self.direcao = "left"
-        self.corpo[0].troca_img_element("./assets/Graphics/head_left.png")
+        if self.direcao != "right":
+            self.direcao = "left"
+            self.corpo[0].troca_img_element("./assets/Graphics/head_left.png")
+            self.flag_move = True
+        else:
+            self.flag_move = False
 
     def move_down(self):
-        self.direcao = "down"
-        self.corpo[0].troca_img_element("./assets/Graphics/head_down.png")
+        if self.direcao != "up":
+            self.direcao = "down"
+            self.corpo[0].troca_img_element("./assets/Graphics/head_down.png")
+            self.flag_move = True
+        else:
+            self.flag_move = False
 
     def move_right(self):
-        self.direcao = "right"
-        self.corpo[0].troca_img_element("./assets/Graphics/head_right.png")
+        if self.direcao != "left":
+            self.direcao = "right"
+            self.corpo[0].troca_img_element("./assets/Graphics/head_right.png")
+            self.flag_move = True
+        else:
+            self.flag_move = False
 
     def print_snake(self):
         for elemento_snake in self.corpo:

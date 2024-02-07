@@ -41,11 +41,30 @@ class Head(Element):
     def __init__(self, x, y, i, j, direction_prox_ele) -> None:
         return super().__init__("./assets/Graphics/head_left.png", x, y, i, j, direction_prox_ele)
 
+    def __str__(self):
+        return f'elemento HEAD'
+
 class Body(Element):
     def __init__(self, x, y, i, j, direction_prox_ele) -> None:
-        return super().__init__("./assets/Graphics/body_horizontal.png", x, y, i, j, direction_prox_ele)
+        if direction_prox_ele == "left" or direction_prox_ele == "right":
+            return super().__init__("./assets/Graphics/body_horizontal.png", x, y, i, j, direction_prox_ele)
+        else:
+            return super().__init__("./assets/Graphics/body_vertical.png", x, y, i, j, direction_prox_ele)    
+
+    def __str__(self):
+        return f'elemento BODY'
 
 class Tail(Element):
     def __init__(self, x, y, i, j, direction_prox_ele) -> None:
-        return super().__init__("./assets/Graphics/tail_right.png", x, y, i, j, direction_prox_ele)
-    
+        if direction_prox_ele == "left":
+            return super().__init__("./assets/Graphics/tail_right.png", x, y, i, j, direction_prox_ele)
+        elif direction_prox_ele == "right":
+            return super().__init__("./assets/Graphics/tail_left.png", x, y, i, j, direction_prox_ele)
+        elif direction_prox_ele == "up":
+            return super().__init__("./assets/Graphics/tail_down.png", x, y, i, j, direction_prox_ele)
+        else:
+            return super().__init__("./assets/Graphics/tail_up.png", x, y, i, j, direction_prox_ele)
+        
+        
+    def __str__(self):
+        return f'elemento TAIL'

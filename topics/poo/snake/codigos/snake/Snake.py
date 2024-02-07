@@ -200,9 +200,15 @@ class Snake:
         for element in self.corpo:
             element.show(screen)
 
+    def att_corpo(self, elemento, index):
+        new_body = Body(elemento.x,elemento.y,elemento.i,elemento.j,elemento.direction_prox_ele)
+        self.corpo[index] = new_body
+
     def check_eat(self,apple):
         if self.head.i == apple.i and self.head.j == apple.j:
-            self.corpo.append(Body(self.last_pos.x,self.last_pos.y,self.last_pos.i,self.last_pos.j,self.last_pos.direction_prox_ele))
+            elemento = self.corpo[len(self.corpo)-1]
+            self.att_corpo(elemento, len(self.corpo)-1)
+            self.corpo.append(Tail(self.last_pos.x,self.last_pos.y,self.last_pos.i,self.last_pos.j,self.last_pos.direction_prox_ele))
             self.tamanho += 1
             return True
         else:

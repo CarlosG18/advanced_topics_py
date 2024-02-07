@@ -135,14 +135,12 @@ class Game:
         comeu = self.snake.check_eat(self.apple)
         comeu_boster = self.snake.check_eat_boster(self.boster)
         if comeu_boster:
-            efeitos_sonoros = ["como-e-amigo", "ai-que-delicia-mickey", "ai-pai-para-hihi", "gay-echo"]
-            load_music(f"./assets/musics/{random.choice(efeitos_sonoros)}.mp3")
+            load_music(f"./assets/musics/boster_eat.mp3")
             self.movimentos += 25
             self.boster = None
         #print(f'comeu = {comeu}')
         if comeu:
-            efeitos_sonoros = ["como-e-amigo", "ai-que-delicia-mickey", "ai-pai-para-hihi", "gay-echo"]
-            load_music(f"./assets/musics/{random.choice(efeitos_sonoros)}.mp3")
+            load_music(f"./assets/musics/snake_eat.mp3")
             self.apple = self.create_apple()
             self.cont_eat += 1
             if self.cont_eat == 2:

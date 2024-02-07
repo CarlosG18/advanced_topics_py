@@ -1,5 +1,9 @@
 import pygame
 
+def load_music(caminho):
+    pygame.mixer.music.load(caminho)
+    pygame.mixer.music.play()
+
 class Button:
     def __init__(self, cor1, cor2, x, y, text, screen, font_file) -> None:
         self.cor1 = cor1
@@ -23,6 +27,7 @@ class Button:
     def check_click(self, x, y):
         if x >= self.x and x <= self.x+self.width and y <= self.y+self.height and y >= self.y:
             self.action()
+            load_music("./assets/musics/button.mp3")
             return True
         else:
             return False

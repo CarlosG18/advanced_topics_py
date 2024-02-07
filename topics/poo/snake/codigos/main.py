@@ -55,8 +55,6 @@ pygame.quit()
 
 #lista de bugs para ajeitar:
 
-#4. ajeitar a cauda da snake quando come uma maça
-
 #10. introduzir tempo
 #11. adicionar efeitos sonoros
 #12. adicionar niveis

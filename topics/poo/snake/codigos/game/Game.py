@@ -4,6 +4,7 @@ from food.Food import Food
 import random
 from game.Tela import TelaInfos, TelaGameOver, TelaInicio
 from game.Bosters import Bosters
+from game.Nivel import Nivel
 import pygame
 
 def load_music(caminho):
@@ -19,16 +20,19 @@ class Game:
         self.apple = self.create_apple()
         self.screen = screen
         self.tela = TelaInfos(screen,20)
-        self.nivel = 1
         self.movimentos = 50
         self.vidas = 3
         self.deset_vidas = False
         self.cont_eat = 0
         self.boster = None
+        self.boster_invisible = None
+        self.bosters = []
         self.status_buttons = None
         self.tela_game_over = TelaGameOver(self.screen,70)
         self.tela_init = TelaInicio(screen,30)
-        #self.badsnake = BadSnake(2,10,self.background.matriz_elemet)
+        self.niveis = Nivel()
+        self.snake_fatasma = False
+        self.moves_fantasma = 20
 
     def check_empty_casa(self, i, j):
         empty = True
@@ -38,7 +42,7 @@ class Game:
                 break
         return empty
 
-    def create_boster(self):
+    def create_boster(self, function):
             i = random.randint(0,self.background.linhas-1)
             j = random.randint(0,self.background.colunas-1)
             empty_casa = self.check_empty_casa(i,j)
@@ -47,10 +51,17 @@ class Game:
                 j = random.randint(0,self.background.colunas-1)
                 empty_casa = self.check_empty_casa(i,j)    
             x, y = self.background.get_xy(i,j)
-            self.boster = Bosters("./assets/Graphics/adicionar.png",x,y,i,j,"movimento+")
+            if function == "movimento+":
+                boster_movimento = Bosters("./assets/Graphics/adicionar.png",x,y,i,j,"movimento+")
+                #self.boster = Bosters("./assets/Graphics/adicionar.png",x,y,i,j,"movimento+")
+                self.bosters.append(boster_movimento)
+            elif function == "invisible":
+                boster_invisible = Bosters("./assets/Graphics/fantasma.png",x,y,i,j,"invisible")
+                self.bosters.append(boster_invisible)
 
     def show_boster(self):
-            self.boster.show(self.screen)
+        for boster in self.bosters:
+            boster.show(self.screen)
 
     def tela_inicio(self):
         self.tela_init.show()
@@ -67,7 +78,7 @@ class Game:
         self.tela.set_tam_font(30)
         self.tela.write(f"NIVEL",1110,20, (255,255,255))
         self.tela.set_tam_font(100)
-        self.tela.write(f'{self.nivel}',1120,50, (255,255,255))
+        self.tela.write(f'{self.niveis.nivel_atual}',1120,50, (255,255,255))
         self.tela.set_tam_font(30)
         self.tela.write(f"VIDAS",1110,190, (255,255,255))
         if self.vidas == 2 and self.deset_vidas:
@@ -83,7 +94,10 @@ class Game:
         self.tela.set_tam_font(30)
         self.tela.write(f"macas restantes",1050,520, (255,255,255))
         self.tela.set_tam_font(100)
-        self.tela.write(f"{self.snake.tamanho}",1120,550, (255,255,255))
+        self.tela.write(f"{self.niveis.total_macas}",1100,550, (255,255,255))
+        if self.snake_fatasma:
+            self.tela.set_tam_font(15)
+            self.tela.write(f"jogadas fantasmas restantes = {self.moves_fantasma}",1050,500, (255,255,255))    
 
     def deset_movimentos(self):
         self.movimentos -= 1
@@ -106,46 +120,65 @@ class Game:
             if self.snake.flag_move:
                 self.snake.move()
                 self.deset_movimentos()
-                self.snake_died = self.snake.check_died()
+                if not self.snake_fatasma:
+                    self.snake_died = self.snake.check_died()
+                else:
+                    self.moves_fantasma -= 1
+                    if self.moves_fantasma == 0:
+                        self.snake_fatasma = False
+                        self.moves_fantasma = 20
+                
                 if self.vidas == 0:
                     self.snake_died = True
                 if self.snake_died:
                     self.tela_morreu()
-        #self.badsnake.move_auto()
-            
+                
     def show_background(self):
         self.screen.fill("black")
         self.background.show(self.screen)
         if not self.start:
             self.tela_inicio()
-        if self.boster:
+        if self.bosters:
             self.show_boster()
 
     def show_snake(self):
         if not self.snake_died and self.start:
             self.infos_tela()
             self.snake.show(self.screen)
-            #self.badsnake.show(self.screen)
     
     def show_apple(self):
         if not self.snake_died and self.start:
             self.apple.show(self.screen)
 
     def check_eat(self):
+        #verificando os bosters
+        if not self.bosters == []:
+            for boster in self.bosters:
+                comeu_boster = self.snake.check_eat_boster(boster)
+                if comeu_boster:
+                    if comeu_boster["function"] == "movimento+":
+                        load_music(f"./assets/musics/boster_eat.mp3")
+                        self.movimentos += 25
+                        self.bosters.remove(boster) 
+                    elif comeu_boster["function"] == "invisible":
+                        load_music(f"./assets/musics/boster_eat.mp3")
+                        self.bosters.remove(boster)
+                        self.snake_fatasma = True
+
+        #verificando a maca
         comeu = self.snake.check_eat(self.apple)
-        comeu_boster = self.snake.check_eat_boster(self.boster)
-        if comeu_boster:
-            load_music(f"./assets/musics/boster_eat.mp3")
-            self.movimentos += 25
-            self.boster = None
-        #print(f'comeu = {comeu}')
         if comeu:
+            self.niveis.snake_eat()
+            if self.niveis.total_macas == 0:
+                self.niveis.up_nivel()
+                self.reiniciar_game()
             load_music(f"./assets/musics/snake_eat.mp3")
             self.apple = self.create_apple()
             self.cont_eat += 1
-            if self.cont_eat == 2:
-                self.create_boster()
-                self.cont_eat = 0
+            if self.cont_eat % 2 == 0:
+                self.create_boster("movimento+")
+            if self.cont_eat % 10 == 0:
+                self.create_boster("invisible")
 
     def create_apple(self):
         linha = random.randint(0,self.background.linhas-1)
@@ -197,6 +230,7 @@ class Game:
 
     def tela_morreu(self):
         self.tela_game_over.show()
+        self.niveis.restart()
         efeitos_sonoros = ["tema-triste-toguro", "naruto-sad"]
         load_music(f"./assets/musics/{random.choice(efeitos_sonoros)}.mp3")
         self.tela_game_over.write("Game Over!",480,250,"black")

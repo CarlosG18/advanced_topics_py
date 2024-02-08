@@ -223,7 +223,11 @@ class Snake:
     def check_eat_boster(self, elemento):
         if elemento is not None:
             if self.head.i == elemento.i and self.head.j == elemento.j:
-                return True
+                dados = {
+                    "status": True,
+                    "function": elemento.function
+                }
+                return dados
             else:
                 return False
         else:

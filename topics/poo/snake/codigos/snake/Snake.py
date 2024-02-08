@@ -1,5 +1,4 @@
 from .Element import Head, Body, Tail
-import pygame
 import random
 
 class Snake:
@@ -275,39 +274,4 @@ class Snake:
 
     def deset_velo(self):
         if self.velo - 1 > 0:
-            self.velo -= 1
-
-    
-
-class BadSnake(Snake):
-    def __init__(self, tamanho, velo, vetor_posicoes):
-        super().__init__(tamanho, velo, vetor_posicoes)
-        self.movimentos = 5
-
-    def move_auto(self):
-        if self.movimentos == 5:
-            direcoes = ['up','down','left','right']
-            direcao = random.choices(direcoes)
-            self.direcao = direcao[0]
-
-        if self.movimentos-1 >= 0:
-            self.movimentos -= 1
-        else:
-            self.movimentos = 5
-
-        if self.direcao == 'left':
-            self.move_left()
-        elif self.direcao == 'right':
-            self.move_right()
-        elif self.direcao == 'up':
-            self.move_top()
-        elif self.direcao == 'down':
-            self.move_down()
-        self.move()
-
-class GoodSnake(Snake):
-    def __init__(self, tamanho, velo, vetor_posicoes):
-        super().__init__(tamanho, velo, vetor_posicoes)
-
-     
-        
+            self.velo -= 1        

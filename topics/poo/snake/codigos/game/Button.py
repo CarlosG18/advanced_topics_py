@@ -40,11 +40,6 @@ class ButtonRestart(Button):
         super().__init__(cor1, cor2, x, y, text, screen, font_file)
         self.function = "restart"
 
-class ButtonPause(Button):
-    def __init__(self, cor1, cor2, x, y, text, screen, font_file) -> None:
-        super().__init__(cor1, cor2, x, y, text, screen, font_file)
-        self.function = "pause"
-
 class ButtonInit(Button):
     def __init__(self, cor1, cor2, x, y, text, screen, font_file) -> None:
         super().__init__(cor1, cor2, x, y, text, screen, font_file)

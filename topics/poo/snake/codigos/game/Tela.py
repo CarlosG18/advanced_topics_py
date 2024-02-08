@@ -1,6 +1,6 @@
 import pygame
 
-from game.Button import ButtonRestart,ButtonPause, ButtonInit
+from game.Button import ButtonRestart, ButtonInit
 from game.Bosters import Imagem
 
 class Tela:
@@ -67,12 +67,6 @@ class TelaInfos(Tela):
     def show_imgs(self):
         for img in self.imgs:
             img.show(self.screen)
-
-    def create_buttons(self):
-        pass
-        #button_restart = ButtonRestart("black","red",1040,500,"restart", self.screen, "./assets/fonts/Potato_sans-Black.otf")
-        #self.buttons.append(button_restart)
-        
 
 class TelaGameOver(Tela):
     def __init__(self, screen, tam_fonte) -> None:

@@ -1,4 +1,4 @@
-from snake.Snake import Snake, BadSnake, GoodSnake
+from snake.Snake import Snake
 from background.Background import Background
 from food.Food import Food
 import random

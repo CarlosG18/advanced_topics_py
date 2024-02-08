@@ -52,8 +52,3 @@ while running:
     clock.tick(60)  # limits FPS to 60
 
 pygame.quit()
-
-#lista de bugs para ajeitar:
-
-#10. introduzir tempo
-#12. adicionar niveis

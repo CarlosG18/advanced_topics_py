@@ -1,6 +1,7 @@
 import pygame
-from personagem.Personagem import Personagem, Animacao
-from pygame.sprite import Group
+from personagem.Personagem import Personagem
+from cenario.Ground import ConjuntoGround
+from cenario.Cenario import Cenario
 
 # pygame setup
 pygame.init()
@@ -9,6 +10,7 @@ clock = pygame.time.Clock()
 running = True
 
 heroi = Personagem()
+cenario = Cenario(None,heroi)
 
 while running:
     # poll for events
@@ -28,7 +30,9 @@ while running:
         heroi.fly()
 
     heroi.show(screen)
-    heroi.gravidade()
+
+    cenario.show(screen)
+
     # flip() the display to put your work on screen
     pygame.display.flip()
     clock.tick(30)  # limits FPS to 60

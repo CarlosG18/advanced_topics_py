@@ -33,7 +33,7 @@ class Personagem:
         self.personagem_animate = Group(self.personagem)
         self.pos_x = self.personagem.rect.x
         self.pos_y = self.personagem.rect.y
-        self.animacao_atual = None
+        self.animacao_atual = "walk"
         self.troca_animacao = False
 
     def show(self, screen): 
@@ -48,9 +48,6 @@ class Personagem:
         self.personagem.rect.x = self.pos_x
         self.personagem.rect.y = self.pos_y
 
-    def gravidade(self):
-        self.personagem.rect.y += 0.5
-        self.att_pos()
 
     def walk(self, direction):
         if self.animacao_atual != "walk":
@@ -79,5 +76,5 @@ class Personagem:
             self.troca_animacao = True
         self.animacao_atual = "fly"
         self.check_animate()
-        self.personagem.rect.y -= 5
+        self.personagem.rect.y -= 10
         self.personagem_animate.update() 

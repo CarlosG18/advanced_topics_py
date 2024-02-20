@@ -47,7 +47,6 @@ class TelaInfos(Tela):
     def __init__(self, screen, fonte) -> None:
         super().__init__(screen, fonte)
         self.color = (0,0,255)
-        self.create_buttons()
         self.modelife3()
 
     def modelife3(self):

@@ -2,12 +2,23 @@ import pygame
 from personagem.Personagem import Personagem
 from cenario.Ground import ConjuntoGround
 from cenario.Cenario import Cenario
+import random
 
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((1280,720))
 clock = pygame.time.Clock()
 running = True
+
+matriz_cenario = []
+for i in range(22):
+    linha = []
+    for j in range(40):
+        elemento = random.randint(0,1)
+        linha.append(elemento)
+    matriz_cenario.append(linha)
+
+print(matriz_cenario)
 
 heroi = Personagem()
 cenario = Cenario(None,heroi)

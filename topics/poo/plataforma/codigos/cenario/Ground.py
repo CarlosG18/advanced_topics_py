@@ -9,6 +9,10 @@ class GroundElement(pygame.sprite.Sprite):
         self.width = 32
         self.height = 32
 
+class GroundUnique(GroundElement):
+    def __init__(self) -> None:
+        super().__init__("./assets/cenario/tiles/Tile_36.png")
+
 class GroundTopLeft(GroundElement):
     def __init__(self) -> None:
         super().__init__("./assets/cenario/tiles/Tile_01.png")
@@ -119,8 +123,27 @@ class ConjuntoGround(pygame.sprite.Sprite):
     def show(self, screen):
         self.group_conjunto.draw(screen)
                 
-        
+class ConjuntoGroundUnique(pygame.sprite.Sprite):
+    def __init__(self, matriz) -> None:
+        super().__init__()
+        self.matriz_elementos = matriz
+        self.group = Group()
+        self.create()
+
+    def create(self):
+        for i, linha in enumerate(self.matriz_elementos):
+            for j, elemento in enumerate(linha):
+                if elemento == 1:
+                    solo = GroundUnique()
+                    solo.rect.x = solo.height * j
+                    solo.rect.y = solo.width * i
+                    self.group.add(solo)
+
+    def show(self, screen):
+        self.group.draw(screen)
                 
+        
+        
         
 
 

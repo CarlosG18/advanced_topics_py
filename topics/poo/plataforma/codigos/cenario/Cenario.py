@@ -1,6 +1,6 @@
 import pygame
 from pygame.sprite import Group
-from cenario.Ground import ConjuntoGround
+from cenario.Ground import ConjuntoGround, ConjuntoGroundUnique
 
 #matriz_fase com 40 colunas e 22 linhas, 0 para vazio e 1 para elemento de ground
 
@@ -12,16 +12,26 @@ class Cenario:
         self.groups_cenario = []
         self.colisao = None
         self.list_colisoes = [None,None]
-        self.create()
+        #self.create()
+
+    def update_matriz(self, matriz):
+        self.matriz = matriz
+        if self.groups_cenario != []:
+            self.groups_cenario.clear()
+        blocos = ConjuntoGroundUnique(self.matriz)
+        self.groups_cenario.append(blocos)
+
 
     def create(self):
         bloco1 = ConjuntoGround(10,2,0,500)
         bloco2 = ConjuntoGround(30,2,200,100)
+        blocos = ConjuntoGroundUnique(self.matriz)
         self.groups_cenario.append(bloco1)
         self.groups_cenario.append(bloco2)
+        self.groups_cenario.append(blocos)
 
     def show(self, screen):
-        self.check_colisao()
+        #self.check_colisao()
         if self.gravity:
             self.gravidade()
         else:

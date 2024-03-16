@@ -3,6 +3,15 @@ import requests as re
 
 response = re.get("http://carlosg18.pythonanywhere.com/treino/list_treino/")
 
+response_tipos = re.get("http://127.0.0.1:8000/treino/get_tipos/")
+tipos = [tipo["modo"]+" "+str(tipo["distancia_corrida"])+"/"+str(tipo["distancia_descanco"]) for tipo in response_tipos.json()["dados"]]
+
+dict_tipo = {}
+
+for i in response_tipos.json()["dados"]:
+    dict_tipo[tipos[i["id"]-1]] = i["id"]
+
+print(dict_tipo)
 
 tela = 0
 
@@ -19,33 +28,65 @@ else:
     tela = 2
 
 if tela == 0:
-    st.text("\n")
+    st.text("tipos de treinos")
+    opcao = st.selectbox("escolha uma opção", options=dict_tipo)
+    #st.write("id escolhido =",dict_tipo[opcao])
+    st.divider()
+
     st.text("informe o nome do treino:")
-    st.text_input("insira aqui", key="titulo")
+    titulo = st.text_input("insira aqui", key="titulo")
     st.divider()
+    
     st.text("data do treino:")
-    st.date_input("data")
+    data = st.date_input("data")
     st.divider()
+
+    st.text("distância total do treino:")
+    distancia = st.number_input("distancia total")
+    st.divider()
+    
     st.text("informe os dados do treino:")
-    st.text_area("insira aqui", key="dados")
+    dados_tempo = st.text_area("insira aqui", key="dados")
     button_send = st.button("enviar")
+
+    dict_create_treino = {
+        "titulo": titulo,
+        "data": str(data.year)+"-"+str(data.month)+"-"+str(data.day),
+        "distancia_total": distancia,
+        "tipo": dict_tipo[opcao],
+        "dados_tempo": dados_tempo, 
+    }
+    
     if button_send:
         st.write("butao enviar apertado")
-        request = re.post("http://carlosg18.pythonanywhere.com/treino/receber_dados", data={
-            "title": st.session_state.titulo,
-            "dados": st.session_state.dados,
-        })
+        st.write(dict_create_treino)
+        request = re.post("http://127.0.0.1:8000/treino/create_treino/", data=dict_create_treino)
         st.write(request.json())
 elif tela == 1:
     st.write(response.json())
 else:
-    st.text("informe o nome do treino:")
-    st.text_input("insira aqui", key="titulo")
+    modos_tipo = [
+        "intervalado",
+        "direto",
+        "subida",
+    ]
+
+    st.text("informe o modo do treino:")
+    modo = st.selectbox("escolha o modo do treino:", options=modos_tipo)
     st.text("informe os dados do treino:")
-    st.text_input("insira aqui", key="dados")
+    dist_corrida = st.number_input("distância de corrida", key="distancia_corrida")
+    dist_descanco = st.number_input("distância de descanco", key="distancia_descanco")
+    dict_create_tipo = {
+        "modo": modo,
+        "distancia_corrida": float(dist_corrida),
+        "distancia_descanco": float(dist_descanco),
+    }
+
     button_send = st.button("enviar")
-
-
+    if button_send:
+        st.write(dict_create_tipo)
+        request = re.post("http://127.0.0.1:8000/treino/create_tipo/", data=dict_create_tipo)
+        st.write(request.json())
 
 
 

@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 #adicionar texto
 st.text('Minha pomba!!')

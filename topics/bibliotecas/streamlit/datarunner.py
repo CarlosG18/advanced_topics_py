@@ -1,7 +1,7 @@
 import streamlit as st
 import requests as re
 
-response = re.get("http://carlosg18.pythonanywhere.com/treino/list_treino/")
+response = re.get("http://127.0.0.1:8000/treino/list_treinos/")
 
 response_tipos = re.get("http://127.0.0.1:8000/treino/get_tipos/")
 tipos = [tipo["modo"]+" "+str(tipo["distancia_corrida"])+"/"+str(tipo["distancia_descanco"]) for tipo in response_tipos.json()["dados"]]
@@ -63,7 +63,7 @@ if tela == 0:
         request = re.post("http://127.0.0.1:8000/treino/create_treino/", data=dict_create_treino)
         st.write(request.json())
 elif tela == 1:
-    st.write(response.json())
+    st.write(response.json()["dados"])
 else:
     modos_tipo = [
         "intervalado",
